@@ -7,6 +7,14 @@
 #include <algorithm>
 #include <random>
 #include <span>
+#include <concepts>
+
+namespace constraints {
+    template <typename T, typename type_constructed>
+    concept can_construct = requires(T value) {
+        type_constructed(value);
+    };
+}
 
 class context_parser {
     public:
@@ -14,6 +22,11 @@ class context_parser {
     static constexpr const std::size_t available_option_count {};
 
     struct option {
+        option(const option&) = default;
+
+        option(constraints::can_construct<std::string> auto, constraints::can_construct<std::string> auto);
+        option(constraints::can_construct<std::string> auto, option*);
+
         const std::string_view name;
         const std::string_view description;
 
@@ -36,4 +49,3 @@ class context_parser {
     bool is_in_test_directory {};
     bool remove_when_done {};
 };
-
