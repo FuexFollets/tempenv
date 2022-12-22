@@ -10,15 +10,10 @@
 #include <span>
 #include <concepts>
 
-namespace constraints {
-    template <typename T, typename type_constructed>
-    concept can_construct = std::is_constructible<type_constructed, T>::value;
-}
-
-class context_parser {
-    public:
-
-    static constexpr const std::size_t available_option_count {};
+namespace tempenv { namespace constraints {
+        template <typename T, typename type_constructed>
+        concept can_construct = std::is_constructible<type_constructed, T>::value;
+    }
 
     struct option {
         option() = default;
@@ -34,31 +29,36 @@ class context_parser {
         const option* same_option {nullptr};
     };
 
+    static constexpr const std::size_t available_option_count {};
     static constexpr const std::array<option, available_option_count> all_options {};
 
-    context_parser() = default;
-    context_parser(int argc, const char** argv);
+    class context_parser {
+        public:
 
-    private:
-    std::vector<std::string> args_list;
+        context_parser() = default;
+        context_parser(int argc, const char** argv);
 
-    std::string test_name {}; // Name of directory test is stored in
-    std::string test_path {}; // Path to the directory in which the test directory will be stored (defaults to $home/tests)
-    std::string current_directory {}; // Current directory at runtime
+        private:
+        std::vector<std::string> args_list;
 
-    bool is_in_test_directory {};
-    bool remove_when_done {};
-};
+        std::string test_name {}; // Name of directory test is stored in
+        std::string test_path {}; // Path to the directory in which the test directory will be stored (defaults to $home/tests)
+        std::string current_directory {}; // Current directory at runtime
 
-context_parser::option::option(
-        constraints::can_construct<std::string> auto option_name,
-        constraints::can_construct<std::string> auto option_description) : 
-    name {std::move(option_name)}, description {std::move(option_description)} {}
+        bool is_in_test_directory {};
+        bool remove_when_done {};
+    };
 
-context_parser::option::option(
-        constraints::can_construct<std::string> auto option_name,
-        option* option_same_as_this) : name {std::move(option_name)}, is_same_as_another {true}, same_option {option_same_as_this} {
-    option_same_as_this -> is_same_as_another = true;
-    option_same_as_this -> same_option = this;
+    option::option(
+            constraints::can_construct<std::string> auto option_name,
+            constraints::can_construct<std::string> auto option_description) :
+        name {std::move(option_name)}, description {std::move(option_description)} {}
+
+    option::option(
+            constraints::can_construct<std::string> auto option_name,
+            option* option_same_as_this) : name {std::move(option_name)}, is_same_as_another {true}, same_option {option_same_as_this} {
+        option_same_as_this -> is_same_as_another = true;
+        option_same_as_this -> same_option = this;
+    }
 }
 
