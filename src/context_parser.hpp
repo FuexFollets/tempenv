@@ -5,33 +5,36 @@
 #include <vector>
 #include <string_view>
 #include <string>
-#include <algorithm>
-#include <random>
-#include <span>
 #include <concepts>
+#include <variant>
 
 namespace tempenv { namespace constraints {
         template <typename T, typename type_constructed>
         concept can_construct = std::is_constructible<type_constructed, T>::value;
     }
 
-    struct option {
-        option() = default;
-        option(const option&) = default;
+    namespace cli_options { // All cli arguments
+        struct option {
+            std::string_view name;
+            std::vector<std::string_view> aliases;
+            std::string_view description;
+        };
 
-        option(constraints::can_construct<std::string> auto, constraints::can_construct<std::string> auto);
-        option(constraints::can_construct<std::string> auto, option*); // If same as another
+        const std::vector<option> options_list {
+            {"--help", {"-h"}, "Lists all available options and descriptions or description(s) for the listed options"},
+            {"--name", {"-n"}, "Indicates the name of the name of the test (and the directory which the test is stored in)"},
+            {"--in", {"-i"}, "The path to the test directory defined in '$__TEMPENV_TESTS_DIR'. Defailts to /tmp/tempenv"},
+            {"--with", {"-w"}, "Copies the listed files and directories into the newly created test environment or directory after exiting"},
+            {"--removetest", {"-rt"}, "Removes the test located in the directory given"},
+            {"--plain", {"--make-plain", "-p", "-mp"}, "Specifies that a testing environment should not have a '.tempenv' file."},
+            {"--remove-when-exit", {"-r", "-rwe"}, "Specifies that a directory should be removed upon exiting with '--exit'"},
+            {"--exit", {"-e"},
+                "Exits the test directory and returns to the previous location before the test was created."
+                "Previous directory stored in '$__TEMPENV_BEFORE_TEST_DIR' environment variable"}
+        };
+    }
 
-        const std::string_view name;
-        const std::string_view description;
-
-        bool is_same_as_another {};
-        option* same_option {nullptr};
-    };
-
-    const std::vector<option> all_options {};
-
-    class context_parser {
+    class context_parser { // Interprets the current environment (arguments, environment variables, .tempenv dotfile)
         public:
 
         context_parser() = default;
@@ -47,17 +50,5 @@ namespace tempenv { namespace constraints {
         bool is_in_test_directory {};
         bool remove_when_done {};
     };
-
-    option::option(
-            constraints::can_construct<std::string> auto option_name,
-            constraints::can_construct<std::string> auto option_description) :
-        name {std::move(option_name)}, description {std::move(option_description)} {}
-
-    option::option(
-            constraints::can_construct<std::string> auto option_name,
-            option* option_same_as_this) : name {std::move(option_name)}, is_same_as_another {true}, same_option {option_same_as_this} {
-        option_same_as_this -> is_same_as_another = true;
-        option_same_as_this -> same_option = this;
-    }
 }
 
