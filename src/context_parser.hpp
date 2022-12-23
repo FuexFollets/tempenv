@@ -29,8 +29,9 @@ namespace tempenv { namespace constraints {
             {"--plain", {"--make-plain", "-p", "-mp"}, "Specifies that a testing environment should not have a '.tempenv' file."},
             {"--remove-when-exit", {"-r", "-rwe"}, "Specifies that a directory should be removed upon exiting with '--exit'"},
             {"--exit", {"-e"},
-                "Exits the test directory and returns to the previous location before the test was created."
-                "Previous directory stored in '$__TEMPENV_BEFORE_TEST_DIR' environment variable"}
+                "Prints the previous location before the test was created. "
+                "Previous directory stored in '$__TEMPENV_BEFORE_TEST_DIR' environment variable"},
+            {"--last-test", {"-lt", "-l"}, "Prints the directory of the last test"}
         };
     }
 
