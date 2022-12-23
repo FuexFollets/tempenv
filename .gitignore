@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+# Dist directory
+dist
