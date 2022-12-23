@@ -20,17 +20,16 @@ namespace tempenv { namespace constraints {
         option(const option&) = default;
 
         option(constraints::can_construct<std::string> auto, constraints::can_construct<std::string> auto);
-        option(constraints::can_construct<std::string> auto, option*);
+        option(constraints::can_construct<std::string> auto, option*); // If same as another
 
         const std::string_view name;
         const std::string_view description;
 
         bool is_same_as_another {};
-        const option* same_option {nullptr};
+        option* same_option {nullptr};
     };
 
-    static constexpr const std::size_t available_option_count {};
-    static constexpr const std::array<option, available_option_count> all_options {};
+    const std::vector<option> all_options {};
 
     class context_parser {
         public:
