@@ -16,12 +16,19 @@
 namespace tempenv { namespace constraints {
         template <typename T, typename type_constructed>
         concept can_construct = std::is_constructible<type_constructed, T>::value;
+
+        template <typename T>
+        concept string_view_constructible = std::is_constructible_v<std::string_view, T>;
     }
 
     namespace cli_options { // All cli arguments
         struct option {
             std::vector<std::string_view> name_ailases;
             std::string_view description;
+        };
+
+        enum OptionType { // Index for option in options list for `name` or `with`
+            Name = 1, With = 3
         };
 
         const std::vector<option> options_list { // A listing of all options as cli_options::option types
@@ -36,7 +43,28 @@ namespace tempenv { namespace constraints {
             {{"--last-test", "-lt", "-l"}, "Prints the directory of the last test. Directory path stored in '$__TEMPENV_BEFORE_TEST_DIR'"}
         };
 
-        bool is_option(const auto& tested_option_name) requires std::is_constructible_v<std::string_view, decltype(tested_option_name)> {
+        const auto& options_with {options_list.at(OptionType::With).name_ailases};
+        const auto& options_name {options_list.at(OptionType::Name).name_ailases};
+
+        inline bool is_option_at_index(std::size_t index, const constraints::string_view_constructible auto& tested_option_name) {
+            return std::count(
+                    options_list.at(index).name_ailases.begin(),
+                    options_list.at(index).name_ailases.end(),
+                    std::string_view {tested_option_name}
+                ) > 0;
+        }
+
+
+
+        inline bool is_copy_with_option(const constraints::string_view_constructible auto& tested_option_name) {
+            return is_option_at_index(OptionType::With, tested_option_name);
+        }
+
+        inline bool is_name_option(const constraints::string_view_constructible auto& tested_option_name) {
+            return is_option_at_index(OptionType::Name, tested_option_name);
+        }
+
+        bool is_option(const constraints::string_view_constructible auto& tested_option_name) {
             const std::string_view string_view_tested_option_name {tested_option_name};
             for (const option& opt: options_list) {
                 for (const std::string_view& name_alias: opt.name_ailases) {
@@ -87,8 +115,35 @@ namespace tempenv { namespace constraints {
         // Interpret arg list
         bool is_currently_name {}; bool already_listed_name {};
         bool is_currently_listing_copied_with {}; bool already_listed_copied_with {};
+
         for (const auto& argument: args_list) {
-            if (is_currently_name) { parsed_args.test_name = argument; }
+            if (is_currently_name) {
+                parsed_args.test_name = argument;
+                already_listed_name = true;
+                is_currently_name = false;
+                continue;
+            }
+
+            if (is_currently_listing_copied_with) {
+                if (cli_options::is_option(argument)) {
+                    already_listed_copied_with = true;
+                    is_currently_listing_copied_with = false;
+                    continue;
+                }
+
+                parsed_args.copied_with.emplace_back(argument);
+                continue;
+            }
+
+            if (cli_options::is_copy_with_option(argument)) {
+                is_currently_listing_copied_with = true;
+                continue;
+            }
+
+            if (cli_options::is_name_option(argument)) {
+                is_currently_name = true;
+                continue;
+            }
         }
 
         // Initialize paths and names
