@@ -22,6 +22,21 @@ namespace tempenv { namespace constraints {
     }
 
     namespace cli_options { // All cli arguments
+
+        struct invalid_option : std::exception {
+            std::string what_string;
+
+            explicit invalid_option(const constraints::can_construct<std::string> auto& message) : what_string {message} {};
+
+            using std::exception::what;
+
+            const char* what() {
+                char* c_what_string {new char[what_string.size()]};
+
+                return std::strcpy(c_what_string, what_string.c_str());
+            }
+        };
+
         struct option {
             std::vector<std::string_view> name_ailases;
             std::string_view description;
@@ -53,7 +68,6 @@ namespace tempenv { namespace constraints {
                     std::string_view {tested_option_name}
                 ) > 0;
         }
-
 
 
         inline bool is_copy_with_option(const constraints::string_view_constructible auto& tested_option_name) {
