@@ -17,6 +17,7 @@ namespace tempenv {
             // Read from `~/.config/tempenv`
             std::filesystem::path config_directory_path {}; // Directory of the configuration file.
             std::string config_file_contents {}; // Contents of the configuration file
+            bool config_file_exists {};
             std::filesystem::path temp_directory_path {}; // Directory where the testing directory will be created.
         } environment_files;
 
