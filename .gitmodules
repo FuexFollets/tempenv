@@ -1,3 +1,6 @@
 [submodule "lib/argparse"]
 	path = lib/argparse
 	url = https://github.com/p-ranav/argparse.git
+[submodule "lib/configparser"]
+	path = lib/configparser
+	url = https://github.com/dzilles/configparser.git
