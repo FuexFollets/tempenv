@@ -4,3 +4,6 @@
 [submodule "lib/configparser"]
 	path = lib/configparser
 	url = https://github.com/dzilles/configparser.git
+[submodule "lib/json"]
+	path = lib/json
+	url = https://github.com/nlohmann/json.git
