@@ -40,19 +40,16 @@ namespace tempenv {
         }
 
         std::filesystem::path configuration_path {std::getenv(env_variable_names::configuration_directory)};
-        configuration_path /= ".tempenv";
+        configuration_path /= "tempenv";
         configuration_path /= ".tempenv.conf";
 
         environment_files.config_file_exists = std::filesystem::exists(configuration_path);
 
         if (environment_files.config_file_exists) { // Read configuration file `$XDG_CONFIG_HOME/tempenv/tempenv.conf`
             environment_files.config_directory_path = configuration_path;
-
             std::ifstream file_contents_stream {configuration_path, std::ios::in};
 
             file_contents_stream >> environment_files.config_file_contents;
-
-            file_contents_stream.close();
         }
     }
 }
