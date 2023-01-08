@@ -1,0 +1,26 @@
+{
+    "tests-location": "$HOME/tests/",
+    "presets": {
+        "some-other-preset": {
+            "copy-with" : [
+                "~/some-file-in-home-directory",
+                "./some-file-in-current-working-directory"
+            ],
+            "execute-in-test-directory": [
+                ["this", "is", "executed", "in", "the", "new", "test", "directory"],
+                ["and", "so", "is", "this"]
+            ]
+        },
+        "cpp": {
+            "copy-with": [
+                "./lib/some-library/",
+                "./main.cpp",
+                "/home/some-user/standard/Makefile"
+            ],
+            "execute-in-test-directory": [
+                ["make", "something"],
+                ["wget", "github.com"]
+            ]
+        }
+    }
+}
