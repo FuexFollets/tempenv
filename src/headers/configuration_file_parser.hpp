@@ -12,7 +12,7 @@ namespace tempenv {
 
         configuration_file() = default;
 
-        explicit configuration_file(const std::vector<std::string>&);
+        explicit configuration_file(const std::filesystem::path&);
     };
 }
 
