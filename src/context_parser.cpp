@@ -1,6 +1,7 @@
 #include <filesystem>
 #include <cstring>
 #include <cstdlib>
+#include <iostream>
 #include <string>
 #include <ios>
 #include <fstream>
@@ -19,15 +20,19 @@ namespace tempenv {
     environment_context::environment_context() {
         const std::filesystem::path current_path {std::filesystem::current_path()};
 
-        _last_test_path = std::getenv(env_variable_names::last_test_path);
-        _last_working_directory = std::getenv(env_variable_names::last_working_directory);
+
+        const auto* last_test_path_env {std::getenv(env_variable_names::last_test_path)};
+        const auto* last_working_directory_env {std::getenv(env_variable_names::last_working_directory)};
+
+        if (last_test_path_env != nullptr) { _last_test_path = last_test_path_env; }
+        if (last_working_directory_env != nullptr) { _last_working_directory = last_working_directory_env; }
 
         std::filesystem::path tempenv_dotfile_path {current_path};
         tempenv_dotfile_path /= ".tempenv";
 
         _is_in_testing_directory = std::filesystem::exists(tempenv_dotfile_path);
 
-        if (!_is_in_testing_directory) { // Set `environment_variables.last_working_directory`
+        if (!_is_in_testing_directory) { // Set `_last_working_directors`
             std::string environment_variable_setting_string {};
 
             environment_variable_setting_string +=

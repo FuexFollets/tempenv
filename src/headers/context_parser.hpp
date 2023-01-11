@@ -1,7 +1,6 @@
 #pragma once
 
 #include <filesystem>
-#include <stack>
 #include <string>
 
 namespace tempenv {
