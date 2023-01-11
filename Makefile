@@ -1,23 +1,27 @@
+LIB_ARGPARSE = ./lib/argparse/include/
+LIB_JSON = ./lib/json/include/
+
 CXX = g++
 CXX_FLAGS = -Wall \
 			-pedantic \
 			-O2 \
-			-std=c++20
+			-std=c++20 \
+			-I $(LIB_ARGPARSE) \
+			-I $(LIB_JSON)
 
-OBJ_FILES = $(wildcard */*.hpp)
+CPP_SRC_FILES = $(wildcard */*.cpp)
+CPP_OBJECT_FILES = $(patsubst src/%.cpp, dist/%.o, $(CPP_SRC_FILES))
 
-tempenv: src/main.cpp $(OBJ_FILES) dist
-	$(CXX) $(CXX_FLAGS) ./src/main.cpp -o ./dist/tempenv
+tempenv: $(CPP_OBJECT_FILES) dist_dir
+	$(CXX) $(CXX_FLAGS) ./dist/*.o -o ./dist/tempenv
 
-#object_file_names:
-#	@echo $(OBJ_FILES)
+./dist/%.o: ./src/%.cpp dist_dir
+	$(CXX) $(CXX_FLAGS) -c $< -o $@
 
-#tempenv: main $(OBJ_FILES)
-#	$(CXX) $(CXX_FLAGS) ./dist/main.o $(OBJ_FILES)
-#	$(CXX) $(CXX_FLAGS) ./dist/main.o -o ./dist/tempenv
+dist_dir:
+	@mkdir -p ./dist/
 
-#main: ./src/main.cpp dist
-#	$(CXX) $(CXX_FLAGS) ./src/main.cpp -c -o ./dist/main.o
-
-dist:
-	mkdir dist
+list_src_dist:
+	@echo $(CPP_SRC_FILES)
+	@echo $(CPP_OBJECT_FILES)
+	
