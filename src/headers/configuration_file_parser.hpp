@@ -4,20 +4,23 @@
 #include <vector>
 #include <string>
 #include <exception>
+#include <nlohmann/json.hpp>
 
 namespace tempenv {
-    struct configuration_file {
-        std::filesystem::path tests_location;
-        bool tests_location_is_specified {};
+    class configuration_file {
+        std::filesystem::path _tests_location;
+        bool _is_valid_tests_location_provided {};
 
-        std::vector<std::string> copy_with;
-        std::vector<std::string> execute_in_test_directory;
+        std::vector<std::string> _copy_with;
+        std::vector<std::string> _execute_in_test_directory;
 
-        std::vector<std::string> invalid_presets;
+        std::vector<std::string> _invalid_presets;
+
+        public:
 
         configuration_file() = default;
 
-        explicit configuration_file(const std::filesystem::path& path_to_configuration_file, const std::vector<std::string>& chosen_preset_names);
+        configuration_file(const nlohmann::json& configuration_json_file, const std::vector<std::string>& chosen_preset_names);
     };
 }
 
