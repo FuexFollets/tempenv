@@ -6,6 +6,7 @@ CXX_FLAGS = -Wall \
 			-pedantic \
 			-O2 \
 			-std=c++20 \
+			-g \
 			-I $(LIB_ARGPARSE) \
 			-I $(LIB_JSON)
 
