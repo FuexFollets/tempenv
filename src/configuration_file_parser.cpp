@@ -39,4 +39,29 @@ namespace tempenv {
             _execute_in_test_directory.insert(_execute_in_test_directory.begin(), executed.begin(), executed.end());
         }
     }
+
+
+    bool configuration_file::is_valid_tests_location_provided() const {
+        return _is_valid_tests_location_provided;
+    }
+
+
+    std::filesystem::path configuration_file::tests_location() const {
+        return _tests_location;
+    }
+
+
+    std::vector<std::filesystem::path> configuration_file::copy_with() const {
+        return _copy_with;
+    }
+
+
+    std::vector<std::vector<std::string>> configuration_file::execute_in_test_directory() const {
+        return _execute_in_test_directory;
+    }
+
+
+    std::vector<std::string> configuration_file::invalid_presets() const {
+        return _invalid_presets;
+    }
 }
