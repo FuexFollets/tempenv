@@ -6,6 +6,10 @@
 #include <ios>
 #include <fstream>
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
+
 #include <stdlib.h>
 
 #include "./headers/context_parser.hpp"
@@ -20,9 +24,8 @@ namespace tempenv {
     environment_context::environment_context() {
         const std::filesystem::path current_path {std::filesystem::current_path()};
 
-
-        const auto* last_test_path_env {std::getenv(env_variable_names::last_test_path)};
-        const auto* last_working_directory_env {std::getenv(env_variable_names::last_working_directory)};
+        const char* last_test_path_env {std::getenv(env_variable_names::last_test_path)};
+        const char* last_working_directory_env {std::getenv(env_variable_names::last_working_directory)};
 
         if (last_test_path_env != nullptr) { _last_test_path = last_test_path_env; }
         if (last_working_directory_env != nullptr) { _last_working_directory = last_working_directory_env; }
@@ -32,7 +35,7 @@ namespace tempenv {
 
         _is_in_testing_directory = std::filesystem::exists(tempenv_dotfile_path);
 
-        if (!_is_in_testing_directory) { // Set `_last_working_directors`
+        if (!_is_in_testing_directory) { // Set `_last_working_directory`
             std::string environment_variable_setting_string {};
 
             environment_variable_setting_string +=
@@ -43,7 +46,17 @@ namespace tempenv {
             putenv(environment_variable_setting_string.data());
         }
 
-        std::filesystem::path configuration_path {std::getenv(env_variable_names::configuration_directory)};
+        std::filesystem::path configuration_path {};
+        const char* configuration_path_env {std::getenv(env_variable_names::configuration_directory)};
+
+        if (configuration_path_env == nullptr) {
+            auto *const home {getpwuid(getuid())};
+            configuration_path = home -> pw_dir; // Home directory path string
+            configuration_path /= ".config";
+        } else {
+            configuration_path = configuration_path_env;
+        }
+
         configuration_path /= "tempenv";
         configuration_path /= ".tempenv.conf";
 
