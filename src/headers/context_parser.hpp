@@ -21,6 +21,7 @@ namespace tempenv {
 
         environment_context();
 
+        // Getters
         [[nodiscard]] std::filesystem::path last_test_path() const;
         [[nodiscard]] std::filesystem::path last_working_directory() const;
         [[nodiscard]] std::filesystem::path config_directory_path() const;
@@ -28,5 +29,14 @@ namespace tempenv {
         [[nodiscard]] std::string config_file_contents() const;
         [[nodiscard]] bool config_file_exists() const;
         [[nodiscard]] bool is_in_testing_directory() const;
+
+        // Setters
+        environment_context& set_last_test_path();
+        environment_context& set_last_working_directory();
+        environment_context& set_config_directory_path();
+        environment_context& set_temp_directory_path();
+        environment_context& set_config_file_contents();
+        environment_context& set_config_file_exists();
+        environment_context& set_is_in_testing_directory();
     };
 } // End of namespace tempenv
