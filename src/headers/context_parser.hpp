@@ -29,7 +29,7 @@ namespace tempenv {
         [[nodiscard]] std::filesystem::path last_working_directory() const;
         [[nodiscard]] std::filesystem::path config_directory_path() const;
         [[nodiscard]] std::filesystem::path temp_directory_path() const;
-        [[nodiscard]] std::string config_file_contents() const;
+        [[nodiscard]] nlohmann::json config_file_contents() const;
         [[nodiscard]] bool config_file_exists() const;
         [[nodiscard]] bool is_in_testing_directory() const; // Works
     };

@@ -70,9 +70,7 @@ namespace tempenv {
 
         if (_config_file_exists) { // Read configuration file `$XDG_CONFIG_HOME/tempenv/tempenv.conf`
             _config_directory_path = configuration_path;
-            std::ifstream file_contents_stream {configuration_path, std::ios::in};
-
-            file_contents_stream >> _config_file_contents;
+            std::ifstream {configuration_path, std::ios::in} >> _config_file_contents;
         }
     }
 
@@ -97,7 +95,7 @@ namespace tempenv {
     }
 
 
-    std::string environment_context::config_file_contents() const {
+    nlohmann::json environment_context::config_file_contents() const {
         return _config_file_contents;
     }
 
