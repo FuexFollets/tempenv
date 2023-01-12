@@ -69,5 +69,40 @@ namespace tempenv {
             file_contents_stream >> _config_file_contents;
         }
     }
+
+
+    std::filesystem::path environment_context::last_test_path() const {
+        return _last_test_path;
+    }
+
+
+    std::filesystem::path environment_context::last_working_directory() const {
+        return _last_working_directory;
+    }
+
+
+    std::filesystem::path environment_context::config_directory_path() const {
+        return _config_directory_path;
+    }
+
+
+    std::filesystem::path environment_context::temp_directory_path() const {
+        return _temp_directory_path;
+    }
+
+
+    std::string environment_context::config_file_contents() const {
+        return _config_file_contents;
+    }
+
+
+    bool environment_context::config_file_exists() const {
+        return _config_file_exists;
+    }
+
+
+    bool environment_context::is_in_testing_directory() const {
+        return _is_in_testing_directory;
+    }
 }
 
