@@ -90,11 +90,6 @@ namespace tempenv {
     }
 
 
-    std::filesystem::path environment_context::temp_directory_path() const {
-        return _temp_directory_path;
-    }
-
-
     nlohmann::json environment_context::config_file_contents() const {
         return _config_file_contents;
     }

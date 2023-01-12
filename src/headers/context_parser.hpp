@@ -17,8 +17,6 @@ namespace tempenv {
         std::filesystem::path _config_directory_path {};
         nlohmann::json _config_file_contents {};
         bool _config_file_exists {};
-        // Directory where the testing directory will be created.
-        std::filesystem::path _temp_directory_path {};
 
         public:
 
