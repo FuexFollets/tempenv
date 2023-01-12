@@ -21,6 +21,13 @@ namespace tempenv {
         const char* const configuration_directory {"XDG_CONFIG_HOME"};
     };
 
+    std::filesystem::path home_directory_path() {
+        std::filesystem::path home_path {};
+        home_path /= getpwuid(getuid()) -> pw_dir;
+
+        return home_path;
+    }
+
     environment_context::environment_context() {
         const std::filesystem::path current_path {std::filesystem::current_path()};
 
@@ -50,15 +57,14 @@ namespace tempenv {
         const char* configuration_path_env {std::getenv(env_variable_names::configuration_directory)};
 
         if (configuration_path_env == nullptr) {
-            auto *const home {getpwuid(getuid())};
-            configuration_path = home -> pw_dir; // Home directory path string
+            configuration_path = home_directory_path();
             configuration_path /= ".config";
         } else {
             configuration_path = configuration_path_env;
         }
 
         configuration_path /= "tempenv";
-        configuration_path /= ".tempenv.conf";
+        configuration_path /= "config.json";
 
         _config_file_exists = std::filesystem::exists(configuration_path);
 
