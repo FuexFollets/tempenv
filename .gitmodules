@@ -1,9 +1,6 @@
 [submodule "lib/argparse"]
 	path = lib/argparse
 	url = https://github.com/p-ranav/argparse.git
-[submodule "lib/json"]
-	path = lib/json
-	url = https://github.com/nlohmann/json.git
 [submodule "lib/yaml-cpp"]
 	path = lib/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp.git
