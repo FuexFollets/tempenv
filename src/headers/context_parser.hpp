@@ -21,6 +21,7 @@ namespace tempenv {
         public:
 
         environment_context();
+        explicit environment_context(const std::filesystem::path& config_directory_path);
 
         // Getters
         [[nodiscard]] std::filesystem::path last_test_path() const;
