@@ -4,9 +4,10 @@
       "/usr/bin/g++",
       "-c",
       "-I",
-      "./lib/argparse/include",
+      "lib/argparse/include/",
       "-I",
-      "./lib/json/include",
+      "lib/yaml-cpp/include/",
+      "-std=c++20",
       "-o",
       "./dist/tempenv",
       "src/main.cpp"
