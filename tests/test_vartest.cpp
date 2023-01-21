@@ -1,6 +1,8 @@
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <iterator>
+#include <nlohmann/json.hpp>
 
 #include "../src/headers/context_parser.hpp"
 #include "../src/headers/configuration_file_parser.hpp"
@@ -8,10 +10,12 @@
 int main() {
     std::cout << std::boolalpha;
     tempenv::environment_context env_context {};
+    nlohmann::json example_configuration_json;
+    std::ifstream {"./../example/example-configuration.json"} >> example_configuration_json;
 
     tempenv::configuration_file configuration_file {
-        env_context.config_file_contents(),
-        std::vector<std::string>{"hello"}
+        example_configuration_json,
+        std::vector<std::string>{"hello", "an-invalid-preset"}
     };
 
     std::cout << "Environent conetext tests: \n\n"
