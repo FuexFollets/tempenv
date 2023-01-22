@@ -24,7 +24,7 @@ namespace tempenv {
         };
 
         configuration_file() = default;
-        explicit configuration_file(const toml::value& toml_contents);
+        explicit configuration_file(const toml::value& parsed_toml);
 
         [[nodiscard]] bool is_valid_tests_location_provided() const;
         [[nodiscard]] std::filesystem::path tests_location() const;
