@@ -6,7 +6,7 @@
       "-I",
       "lib/argparse/include/",
       "-I",
-      "lib/yaml-cpp/include/",
+      "lib/toml11",
       "-std=c++20",
       "-o",
       "./dist/tempenv",
