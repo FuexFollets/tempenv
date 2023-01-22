@@ -1,5 +1,5 @@
 LIB_ARGPARSE := ./lib/argparse/include/
-LIB_JSON := ./lib/json/include/
+LIB_TOML := ./lib/toml11/
 
 CXX := g++
 CXX_FLAGS := -Wall \
@@ -8,7 +8,7 @@ CXX_FLAGS := -Wall \
 			-std=c++20 \
 			-g \
 			-I $(LIB_ARGPARSE) \
-			-I $(LIB_JSON)
+			-I $(LIB_TOML)
 
 CPP_FILES := $(filter-out ./src/main.cpp, $(shell find ./src -name "*.cpp"))
 MAIN_FILE := $(shell find ./src -name "main.cpp")
