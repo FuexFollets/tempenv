@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include <exception>
-#include <toml.hpp>
+#include <toml++/toml.h>
 
 namespace tempenv {
     class configuration_file {
@@ -24,7 +24,6 @@ namespace tempenv {
         };
 
         configuration_file() = default;
-        explicit configuration_file(const toml::value& parsed_toml);
 
         [[nodiscard]] bool is_valid_tests_location_provided() const;
         [[nodiscard]] std::filesystem::path tests_location() const;
