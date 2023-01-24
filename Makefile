@@ -2,7 +2,7 @@ LIB_ARGPARSE := ./lib/argparse/include/
 LIB_TOML := ./lib/tomlplusplus/include/
 
 CXX := g++
-CXX_FLAGS := -Wall \
+CXX_FLAGS := -Wall -Wextra \
 			-pedantic \
 			-O2 \
 			-std=c++20 \
