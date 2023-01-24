@@ -1,5 +1,5 @@
 LIB_ARGPARSE := ./lib/argparse/include/
-LIB_TOML := ./lib/toml11/
+LIB_TOML := ./lib/tomlplusplus/include/
 
 CXX := g++
 CXX_FLAGS := -Wall \
