@@ -1,6 +1,6 @@
 tests_location = "/home/fuexfollets/tests/"
 
-[presets.forall]
+[forall_presets]
 execute_in_test_directory = [["touch", "note.txt"]]
 
 [presets.example_preset]
