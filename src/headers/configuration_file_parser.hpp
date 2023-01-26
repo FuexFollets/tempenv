@@ -2,8 +2,6 @@
 
 #include <filesystem>
 #include <vector>
-#include <string>
-#include <exception>
 #include <toml++/toml.h>
 
 namespace tempenv {
@@ -29,13 +27,16 @@ namespace tempenv {
         [[nodiscard]] std::filesystem::path tests_location() const;
         [[nodiscard]] std::vector<preset> available_presets() const;
 
+        [[nodiscard]] std::vector<std::filesystem::path> copy_with() const;
+        [[nodiscard]] std::vector<std::vector<std::string>> execute_in_test_directory() const;
+
         private:
 
         std::filesystem::path _tests_location {};
         bool _is_valid_tests_location_provided {};
 
         std::vector<preset> _available_presets {};
-
+        preset _forall_presets {};
     };
 }
 
