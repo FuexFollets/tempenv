@@ -19,7 +19,7 @@ namespace tempenv {
             [[nodiscard]] std::vector<std::vector<std::string>> execute_in_test_directory() const;
 
             preset() = default;
-            preset(std::string preset_name, const toml::table& preset_node);
+            preset(std::string&& preset_name, const toml::table& preset_table);
         };
 
         configuration_file() = default;
