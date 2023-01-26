@@ -18,6 +18,18 @@ namespace tempenv {
         }
         {}
 
+    std::string configuration_file::preset::name() const {
+        return _name;
+    }
+
+    std::vector<std::filesystem::path> configuration_file::preset::copy_with() const {
+        return _copy_with;
+    }
+
+    std::vector<std::vector<std::string>> configuration_file::preset::execute_in_test_directory() const {
+        return _execute_in_test_directory;
+    }
+
     configuration_file::configuration_file(const toml::table& parsed_config_file) :
         _tests_location {parsed_config_file.at("tests_location").as_string() -> get()},
         _is_valid_tests_location_provided {std::filesystem::exists(_tests_location)} {
@@ -36,5 +48,36 @@ namespace tempenv {
                 ));
             }
         }
+    }
+
+    bool configuration_file::is_valid_tests_location_provided() const {
+        return _is_valid_tests_location_provided;
+    }
+
+    std::filesystem::path configuration_file::tests_location() const {
+        return _tests_location;
+    }
+
+    std::vector<configuration_file::preset> configuration_file::available_presets() const {
+        return _available_presets;
+    }
+
+    std::vector<std::filesystem::path>
+        configuration_file::copy_with(const std::vector<std::string>& presets_to_copy) const {
+        std::vector<std::filesystem::path> paths_to_copy_with {};
+
+        for (const preset& available_preset: _available_presets) {
+            for (const std::string& preset_to_copy: presets_to_copy) {
+                if (preset_to_copy == available_preset.name()) {
+                    paths_to_copy_with.insert(
+                            paths_to_copy_with.end(),
+                            available_preset.copy_with().cbegin(),
+                            available_preset.copy_with().cend()
+                    );
+                }
+            }
+        }
+
+        return paths_to_copy_with;
     }
 }
