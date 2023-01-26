@@ -29,9 +29,13 @@ namespace tempenv {
         [[nodiscard]] std::filesystem::path tests_location() const;
         [[nodiscard]] std::vector<preset> available_presets() const;
 
-        [[nodiscard]] std::vector<std::filesystem::path>
-            copy_with(const std::vector<std::string>& presets_to_copy) const;
-        [[nodiscard]] std::vector<std::vector<std::string>> execute_in_test_directory() const;
+        struct copy_and_execute {
+            std::vector<std::filesystem::path> copy_with {};
+            std::vector<std::vector<std::string>> execute_in_test_directory {};
+        };
+
+        [[nodiscard]] copy_and_execute
+            files_to_copy_and_execute(const std::vector<std::string>& chosen_presets) const;
 
         private:
 

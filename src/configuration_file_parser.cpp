@@ -62,22 +62,28 @@ namespace tempenv {
         return _available_presets;
     }
 
-    std::vector<std::filesystem::path>
-        configuration_file::copy_with(const std::vector<std::string>& presets_to_copy) const {
-        std::vector<std::filesystem::path> paths_to_copy_with {};
+    configuration_file::copy_and_execute
+        configuration_file::files_to_copy_and_execute(const std::vector<std::string>& chosen_presets) const {
+        copy_and_execute accumulated_presets {};
 
         for (const preset& available_preset: _available_presets) {
-            for (const std::string& preset_to_copy: presets_to_copy) {
-                if (preset_to_copy == available_preset.name()) {
-                    paths_to_copy_with.insert(
-                            paths_to_copy_with.end(),
+            for (const std::string& chosen_preset: chosen_presets) {
+                if (chosen_preset == available_preset.name()) {
+                    accumulated_presets.copy_with.insert(
+                            accumulated_presets.copy_with.end(),
                             available_preset.copy_with().cbegin(),
                             available_preset.copy_with().cend()
+                    );
+
+                    accumulated_presets.execute_in_test_directory.insert(
+                            accumulated_presets.execute_in_test_directory.end(),
+                            available_preset.execute_in_test_directory().cbegin(),
+                            available_preset.execute_in_test_directory().cend()
                     );
                 }
             }
         }
 
-        return paths_to_copy_with;
+        return accumulated_presets;
     }
 }
