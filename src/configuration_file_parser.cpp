@@ -1,3 +1,5 @@
+#include <functional>
+#include <optional>
 #include <string>
 #include <filesystem>
 #include <string_view>
@@ -7,16 +9,31 @@
 
 namespace tempenv {
     configuration_file::preset::preset(std::string&& preset_name, const toml::table& preset_table) :
-        _name {preset_name},
-        _copy_with {preset_table.at("copy_with")
-            .value<std::vector<std::filesystem::path>>()
-            .value_or(std::vector<std::filesystem::path> {})
-        },
-        _execute_in_test_directory {preset_table.at("execute_in_test_directory")
-            .value<std::vector<std::vector<std::string>>>()
-            .value_or(std::vector<std::vector<std::string>> {})
+        _name {preset_name} {
+            for (const toml::node& path: *preset_table.at("copy_with").as_array()) {
+
+                path.value<std::string>()
+                    .transform([&, this](const std::string& maybe_path_string) {
+                        _copy_with.emplace_back(maybe_path_string);
+                        return maybe_path_string;
+                    });
+            }
+
+            for (const toml::node& command: *preset_table.at("execute_in_test_directory").as_array()) {
+                const toml::array command_words {command.as_array()};
+                std::vector<std::string> command_words_vector {};
+
+                for (const toml::node& word: command_words) {
+                    word.value<std::string>()
+                        .transform([&](const std::string& maybe_word) {
+                            command_words_vector.push_back(maybe_word);
+                            return maybe_word;
+                        });
+                }
+            }
+
+
         }
-        {}
 
     std::string configuration_file::preset::name() const {
         return _name;
@@ -44,7 +61,7 @@ namespace tempenv {
 
             if (key_name.starts_with("preset.")) {
                 _available_presets.push_back(preset (
-                    std::string {}, *value.as_table()
+                    std::string {key_name.substr(0, 7)}, *value.as_table()
                 ));
             }
         }
