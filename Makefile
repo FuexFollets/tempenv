@@ -5,7 +5,7 @@ CXX := g++
 CXX_FLAGS := -Wall -Wextra \
 			-pedantic \
 			-O2 \
-			-std=c++20 \
+			-std=c++23 \
 			-g \
 			-I $(LIB_ARGPARSE) \
 			-I $(LIB_TOML)
