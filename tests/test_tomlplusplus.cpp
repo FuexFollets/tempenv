@@ -5,7 +5,7 @@
 
 int main() {
     const auto example {
-        toml::parse_file("/home/fuexfollets/Projects/tempenv/tests/example.toml")};
+        toml::parse_file("/home/fuexfollets/Projects/tempenv/example/example_configuration.toml")};
 
     /*
     std::cout << "Parsed toml file: \n"

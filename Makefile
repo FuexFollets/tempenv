@@ -17,6 +17,7 @@ SOURCE_FILES := $(HEADER_FILES) $(CPP_FILES)
 OBJECT_FILES := $(patsubst ./src/%.cpp, ./dist/objects/%.o, $(CPP_FILES))
 
 # For running tests
+COMPILE_OBJECT_FILES ?= "TRUE"
 NAME ?=
 
 clean:
@@ -30,7 +31,14 @@ runtest: test_$(NAME) dist_dir
 	./dist/$<
 
 test_%: ./dist/objects/test_%.o $(OBJECT_FILES) dist_dir # Makes test binaries
-	$(CXX) $(CXX_FLAGS) $(OBJECT_FILES) $< -o ./dist/$@
+	ifeq ($(COMPILE_OBJECT_FILES), "TRUE")
+		$(CXX) $(CXX_FLAGS) $(OBJECT_FILES) $< -o ./dist/$@
+	endif
+
+	ifeq ($(COMPILE_OBJECT_FILES), "FALSE")
+		$(CXX) $(CXX_FLAGS) $< -o ./dist/$@
+	endif
+
 	@echo
 	./dist/$@
 
@@ -39,7 +47,9 @@ test_%: ./dist/objects/test_%.o $(OBJECT_FILES) dist_dir # Makes test binaries
 	$(CXX) $(CXX_FLAGS) -c $< -o $@
 
 ./dist/objects/%.o: ./src/%.cpp $(HEADER_FILES) dist_dir # Makes object files
-	$(CXX) $(CXX_FLAGS) -c $< -o $@
+	ifeq ($(COMPILE_OBJECT_FILES), "TRUE")
+		$(CXX) $(CXX_FLAGS) -c $< -o $@
+	endif
 
 dist_dir:
 	@mkdir -p ./dist/objects
