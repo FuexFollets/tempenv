@@ -4,6 +4,7 @@ LIB_TOML := ./lib/tomlplusplus/include/
 CXX := g++
 CXX_FLAGS := -Wall \
 			-pedantic \
+			-pipe \
 			-O2 \
 			-std=c++23 \
 			-g \
