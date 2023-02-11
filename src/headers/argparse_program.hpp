@@ -1,6 +1,7 @@
 #include <optional>
 #include <string>
 #include <filesystem>
+#include <exception>
 
 #include <argparse/argparse.hpp>
 
@@ -13,9 +14,14 @@ namespace tempenv {
 
         argparse::ArgumentParser program;
 
+        void initialize_program();
+
         public:
 
         [[nodiscard]] std::string test_name() const;
         [[nodiscard]] std::optional<std::filesystem::path> test_directory() const;
+
+        tempenv_argument_parser() = default;
+        tempenv_argument_parser(int argc, const char** argv);
     };
 }
