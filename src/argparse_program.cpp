@@ -31,7 +31,7 @@ namespace tempenv {
 
         _test_name = program.get<std::string>("-n");
 
-        if (program["-i"] == true) {
+        if (program.is_used("-i")) {
             _test_directory = std::filesystem::path {program.get<std::string>("-i")};
         }
     }
