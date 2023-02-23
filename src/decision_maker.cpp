@@ -1,6 +1,4 @@
-#include "headers/argparse_program.hpp"
 #include "headers/defaults.hpp"
-#include "headers/configuration_file_parser.hpp"
 
 #include "headers/decision_maker.hpp"
 
@@ -18,5 +16,13 @@ namespace tempenv {
         else {
             _tests_location = default_path_for_tests();
         }
+    }
+
+    std::filesystem::path decision_maker::tests_location() const {
+        return _tests_location;
+    }
+
+    std::string decision_maker::test_name() const {
+        return _test_name;
     }
 }
