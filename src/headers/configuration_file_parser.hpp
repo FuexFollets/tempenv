@@ -1,4 +1,4 @@
-#pragma once
+#ifndef CONFIGURATION_FILE_PARSER_HPP
 
 #include <filesystem>
 #include <toml++/toml.h>
@@ -20,3 +20,4 @@ namespace tempenv {
     };
 }
 
+#endif

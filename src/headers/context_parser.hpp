@@ -1,4 +1,4 @@
-#pragma once
+#ifndef TEMPENV_CONTEXT_PARSER_HPP
 
 #include <filesystem>
 #include <string>
@@ -32,3 +32,5 @@ namespace tempenv {
         [[nodiscard]] bool is_in_testing_directory() const; // Works
     };
 } // End of namespace tempenv
+
+#endif

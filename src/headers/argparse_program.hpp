@@ -1,3 +1,5 @@
+#ifndef TEMPENV_ARGPARSE_PROGRAM_HPP
+
 #include <optional>
 #include <string>
 #include <filesystem>
@@ -25,3 +27,5 @@ namespace tempenv {
         tempenv_argument_parser(int argc, const char** argv);
     };
 }
+
+#endif

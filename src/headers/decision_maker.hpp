@@ -1,3 +1,5 @@
+#ifndef TEMPENV_DECISION_MAKER_HPP
+
 #include <filesystem>
 #include <string>
 
@@ -23,3 +25,5 @@ namespace tempenv {
         decision_maker(const configuration_file& parsed_config_file, const tempenv_argument_parser& parsed_arguments);
     };
 }
+
+#endif
