@@ -20,6 +20,6 @@ namespace tempenv {
         [[nodiscard]] std::filesystem::path tests_location() const;
         [[nodiscard]] std::string test_name() const;
 
-        decision_maker(configuration_file parsed_config_file, tempenv_argument_parser parsed_arguments);
+        decision_maker(const configuration_file& parsed_config_file, const tempenv_argument_parser& parsed_arguments);
     };
 }
