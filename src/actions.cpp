@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <filesystem>
 #include <iostream>
+#include <fstream>
 
 #include "headers/actions.hpp"
 
@@ -24,11 +25,16 @@ namespace tempenv {
         }
 
         make_test_directory(directory_to_be_made);
+        make_tempenv_file(directory_to_be_made);
+
+        std::cout << directory_to_be_made << '\n';
     }
 
     void make_test_directory(const std::filesystem::path& test_directory_to_be_made) {
-        std::cout
-            << "Make test directory called where: "
-            << '\t' << "test_directory_to_be_made = " << test_directory_to_be_made << '\n';
+        std::filesystem::create_directory(test_directory_to_be_made);
+    }
+
+    void make_tempenv_file(const std::filesystem::path& test_directory_path) {
+        std::ofstream {test_directory_path / ".tempenv"}.close();
     }
 }
