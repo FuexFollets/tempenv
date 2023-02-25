@@ -27,7 +27,7 @@ namespace tempenv {
         make_test_directory(directory_to_be_made);
         make_tempenv_file(directory_to_be_made);
 
-        std::cout << directory_to_be_made << '\n';
+        std::cout << directory_to_be_made.string() << '\n';
     }
 
     void make_test_directory(const std::filesystem::path& test_directory_to_be_made) {
