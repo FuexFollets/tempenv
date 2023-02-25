@@ -8,8 +8,8 @@ namespace tempenv {
     void make_decisions(const decision_maker& decisions) {
         if (!std::filesystem::is_directory(decisions.tests_location())) {
             std::cerr
-                << "Error, directory '" << decisions.tests_location()
-                << "' does not exist. Exiting";
+                << "Error, directory " << decisions.tests_location()
+                << " does not exist.\nExiting.";
             exit(128); // Invalid argument
         }
 
@@ -18,8 +18,8 @@ namespace tempenv {
 
         if (std::filesystem::exists(directory_to_be_made)) {
             std::cerr
-                << "Error, file system object already exists at path '"
-                << directory_to_be_made << "'. Exiting";
+                << "Error, file system object already exists at path "
+                << directory_to_be_made << ".\nExiting.";
             exit(128); // Invalid argument
         }
 
