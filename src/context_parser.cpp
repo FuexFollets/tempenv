@@ -16,89 +16,54 @@
 
 namespace tempenv {
     namespace env_variable_names {
-        const char* const last_test_path {"__TEMPENV_BEFORE_TEST_PATH"};
-        const char* const last_working_directory {"__TEMPENV_BEFORE_TEST_PATH"};
-        const char* const configuration_directory {"XDG_CONFIG_HOME"};
+        const char* const most_recent_test_path {"__TEMPENV_MOST_RECENT_TEST_PATH"};
+        const char* const path_before_test_env {"__TEMPENV_BEFORE_TEST"};
     };
-
-    std::filesystem::path home_directory_path() {
-        std::filesystem::path home_path {};
-        home_path /= getpwuid(getuid()) -> pw_dir;
-
-        return home_path;
-    }
 
     environment_context::environment_context() {
         const std::filesystem::path current_path {std::filesystem::current_path()};
 
-        const char* last_test_path_env {std::getenv(env_variable_names::last_test_path)};
-        const char* last_working_directory_env {std::getenv(env_variable_names::last_working_directory)};
+        const char* most_recent_test_path_env {std::getenv(env_variable_names::most_recent_test_path)};
+        const char* path_before_test_env {std::getenv(env_variable_names::path_before_test_env)};
 
-        if (last_test_path_env != nullptr) { _last_test_path = last_test_path_env; }
-        if (last_working_directory_env != nullptr) { _last_working_directory = last_working_directory_env; }
+        if (most_recent_test_path_env != nullptr) {
+            _most_recent_test_path = std::filesystem::path {most_recent_test_path_env};
+        }
 
-        std::filesystem::path tempenv_dotfile_path {current_path};
-        tempenv_dotfile_path /= ".tempenv";
+        if (path_before_test_env != nullptr) {
+            _path_before_test = std::filesystem::path {path_before_test_env};
+        }
 
-        _is_in_testing_directory = std::filesystem::exists(tempenv_dotfile_path);
+        _is_in_testing_directory = std::filesystem::exists(current_path / ".tempenv");
 
-        if (!_is_in_testing_directory) { // Set `_last_working_directory`
-            std::string environment_variable_setting_string {};
-
-            environment_variable_setting_string +=
-                std::string {env_variable_names::last_working_directory} +
+        if (!_is_in_testing_directory) {
+            std::string environment_variable_setting_string {
+                std::string {env_variable_names::path_before_test_env} +
                 std::string {"="} +
-                current_path.string();
+                current_path.string()
+            };
 
             putenv(environment_variable_setting_string.data());
         }
 
-        std::filesystem::path configuration_path {};
-        const char* configuration_path_env {std::getenv(env_variable_names::configuration_directory)};
+        else {
+            std::string environment_variable_setting_string {
+                std::string {env_variable_names::most_recent_test_path} +
+                std::string {"="} +
+                current_path.string()
+            };
 
-        if (configuration_path_env == nullptr) {
-            configuration_path = home_directory_path();
-            configuration_path /= ".config";
-        } else {
-            configuration_path = configuration_path_env;
-        }
-
-        configuration_path /= "tempenv";
-        configuration_path /= "config.json";
-
-        _config_file_exists = std::filesystem::exists(configuration_path);
-
-        if (_config_file_exists) { // Read configuration file `$XDG_CONFIG_HOME/tempenv/tempenv.conf`
-            _config_directory_path = configuration_path;
-            std::ifstream {configuration_path, std::ios::in} >> _config_file_contents;
+            putenv(environment_variable_setting_string.data());
         }
     }
 
-
-    std::filesystem::path environment_context::last_test_path() const {
-        return _last_test_path;
+    std::filesystem::path environment_context::most_recent_test_path() const {
+        return _most_recent_test_path;
     }
 
-
-    std::filesystem::path environment_context::last_working_directory() const {
-        return _last_working_directory;
+    std::filesystem::path environment_context::path_before_test() const {
+        return _path_before_test;
     }
-
-
-    std::filesystem::path environment_context::config_directory_path() const {
-        return _config_directory_path;
-    }
-
-
-    nlohmann::json environment_context::config_file_contents() const {
-        return _config_file_contents;
-    }
-
-
-    bool environment_context::config_file_exists() const {
-        return _config_file_exists;
-    }
-
 
     bool environment_context::is_in_testing_directory() const {
         return _is_in_testing_directory;

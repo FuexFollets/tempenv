@@ -2,35 +2,23 @@
 
 #include <filesystem>
 #include <string>
-#include <nlohmann/json.hpp>
 
 namespace tempenv {
     std::filesystem::path home_directory_path();
 
     class environment_context {
-        // Directory to the last time in a test. Reads from `$__TEMPENV_LAST_TEST_PATH`
-        std::filesystem::path _last_test_path {};
-        // String path to the last working directory. Reads from `$__TEMPENV_BEFORE_TEST_PATH`
-        std::filesystem::path _last_working_directory {};
-        bool _is_in_testing_directory {}; // Determines if the current directory has a `.tempenv` file
-        // Directory of the configuration file.
-        std::filesystem::path _config_directory_path {};
-        nlohmann::json _config_file_contents {};
-        bool _config_file_exists {};
+        std::filesystem::path _most_recent_test_path {};
+        std::filesystem::path _path_before_test {};
+        bool _is_in_testing_directory {};
 
         public:
 
         environment_context();
-        explicit environment_context(const std::filesystem::path& config_directory_path);
 
-        // Getters
-        [[nodiscard]] std::filesystem::path last_test_path() const;
-        [[nodiscard]] std::filesystem::path last_working_directory() const;
-        [[nodiscard]] std::filesystem::path config_directory_path() const;
-        [[nodiscard]] nlohmann::json config_file_contents() const;
-        [[nodiscard]] bool config_file_exists() const;
-        [[nodiscard]] bool is_in_testing_directory() const; // Works
+        [[nodiscard]] std::filesystem::path most_recent_test_path() const;
+        [[nodiscard]] std::filesystem::path path_before_test() const;
+        [[nodiscard]] bool is_in_testing_directory() const;
     };
-} // End of namespace tempenv
+}
 
 #endif
