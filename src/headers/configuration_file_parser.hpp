@@ -16,7 +16,7 @@ namespace tempenv {
         private:
 
         std::filesystem::path _tests_location {};
-        bool _is_valid_tests_location_provided {};
+        bool _is_valid_tests_location_provided {false};
     };
 }
 
