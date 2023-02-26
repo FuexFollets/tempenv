@@ -6,7 +6,7 @@
 
 namespace tempenv {
     configuration_file::configuration_file(const toml::table& parsed_config_file) {
-        const auto maybe_test_path_name {
+        const std::optional<std::string> maybe_test_path_name {
             parsed_config_file["tests_location"].value<std::string>()
         };
 

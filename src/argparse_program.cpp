@@ -37,14 +37,6 @@ namespace tempenv {
             exit(128);
         }
 
-        /*
-        catch (const std::runtime_error& error) {
-            std::cerr
-                << error.what() << '\n'
-                << program << '\n' ;
-        }
-        */
-
         _test_name = program.get<std::string>("-n");
 
         if (program.is_used("-i")) {
