@@ -5,7 +5,7 @@ CXX := g++
 CXX_FLAGS := -Wall \
 			-pedantic \
 			-pipe \
-			-g \
+			-O2 \
 			-std=c++23 \
 			-I $(LIB_ARGPARSE) \
 			-I $(LIB_TOML)
@@ -37,7 +37,7 @@ test_%: ./dist/tests/test_%.o $(OBJECT_FILES) dist_dir # Makes test binaries
 
 
 ./dist/tests/test_%.o: ./tests/test_%.cpp dist_dir
-	$(CXX) $(CXX_FLAGS) -c $< -o $@
+	$(CXX) $(CXX_FLAGS) -g -c $< -o $@
 
 ./dist/objects/%.o: ./src/%.cpp $(HEADER_FILES) dist_dir # Makes object files
 	$(CXX) $(CXX_FLAGS) -c $< -o $@
