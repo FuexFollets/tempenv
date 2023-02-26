@@ -22,7 +22,7 @@ namespace tempenv {
     }
 
     tempenv_argument_parser::tempenv_argument_parser(int argc, const char** argv) :
-        program {"tempenv"} {
+        program {"tempenv", "1.0.0"} {
         this -> initialize_program();
 
         try {
