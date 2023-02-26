@@ -1,3 +1,4 @@
+#include <exception>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -11,7 +12,7 @@ namespace tempenv {
     void tempenv_argument_parser::initialize_program() {
         program.add_argument("-n", "--name")
             .required()
-            .help("The name of the test (required). Will be the name of the directory where the test will be made");
+            .help("The name of the test. Will be the name of the directory where the test will be made");
 
         program.add_argument("-i", "--in")
             .help("A path to where the test directory will be made");
@@ -26,11 +27,23 @@ namespace tempenv {
 
         try {
             program.parse_args(argc, argv);
-        } catch (const std::runtime_error& error) {
+        }
+
+        catch (const std::exception& error) {
+            std::cerr
+                << "Error, no argument provided for '--name', '-n'.\n"
+                   "Try '--help' for a list of arguments\n"
+                   "Exiting.\n";
+            exit(128);
+        }
+
+        /*
+        catch (const std::runtime_error& error) {
             std::cerr
                 << error.what() << '\n'
                 << program << '\n' ;
         }
+        */
 
         _test_name = program.get<std::string>("-n");
 

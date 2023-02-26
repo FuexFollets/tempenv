@@ -1,9 +1,11 @@
 #include <filesystem>
 
+#include <iostream>
 #include <toml++/toml.h>
 
 #include "headers/defaults.hpp"
 #include "headers/decision_maker.hpp"
+#include "toml++/impl/parse_error.h"
 
 namespace tempenv {
     decision_maker::decision_maker(const tempenv_argument_parser& parsed_arguments) :
@@ -15,12 +17,25 @@ namespace tempenv {
         };
 
         if (parsed_arguments.configuration_file_location().has_value()) {
-            parsed_config_file = configuration_file {
-                toml::parse_file(parsed_arguments
+            const std::string config_file_location_string {parsed_arguments
                         .configuration_file_location()
                         .value_or(std::filesystem::path {})
-                        .string())
+                        .string()
             };
+
+            try {
+                parsed_config_file = configuration_file {
+                    toml::parse_file(config_file_location_string)
+                };
+            }
+
+            catch (const toml::v3::ex::parse_error& parse_error) {
+                std::cerr
+                    << "Unable to parse file at \"" << config_file_location_string
+                    << "\"\nExiting\n";
+
+                exit(128);
+            }
         }
 
         else if (std::filesystem::is_regular_file(default_configuration_file_path)) {
