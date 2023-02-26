@@ -8,16 +8,14 @@ namespace stdc {
 
 namespace tempenv {
     std::filesystem::path default_path_for_tests() {
-        return std::filesystem::temp_directory_path();
+        return std::filesystem::temp_directory_path() / "tempenv";
     }
 
-    std::optional<std::filesystem::path> default_configuration_path() {
+    std::filesystem::path default_configuration_path() {
         std::filesystem::path config_path {};
         config_path /= stdc::getpwuid(stdc::getuid()) -> pw_dir;
         config_path /= ".config/tempenv";
 
-        return std::filesystem::is_directory(config_path) ?
-            std::make_optional(config_path) :
-            std::optional<std::filesystem::path> {};
+        return config_path;
     }
 }

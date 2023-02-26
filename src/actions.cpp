@@ -7,19 +7,30 @@
 
 namespace tempenv {
     void make_decisions(const decision_maker& decisions) {
-        if (!std::filesystem::is_directory(decisions.tests_location())) {
+        if (decisions.default_test_location_chosen() &&
+            !std::filesystem::exists(decisions.tests_location())) {
+            std::filesystem::create_directory(decisions.tests_location());
+        }
+
+        if (!std::filesystem::exists(decisions.tests_location())) {
             std::cerr
                 << "Error, directory " << decisions.tests_location()
                 << " does not exist.\nExiting.";
             exit(128); // Invalid argument
         }
 
+        if (!std::filesystem::is_directory(decisions.tests_location())) {
+            std::cerr
+                << "Error, filesystem object " << decisions.tests_location()
+                << " exists but is not a directory.\nExiting";
+            exit(128); // Invalid argument
+        }
 
         const auto directory_to_be_made {decisions.tests_location() / decisions.test_name()};
 
         if (std::filesystem::exists(directory_to_be_made)) {
             std::cerr
-                << "Error, file system object already exists at path "
+                << "Error, filesystem object already exists at path "
                 << directory_to_be_made << ".\nExiting.";
             exit(128); // Invalid argument
         }
@@ -31,7 +42,7 @@ namespace tempenv {
     }
 
     void make_test_directory(const std::filesystem::path& test_directory_to_be_made) {
-        std::filesystem::create_directory(test_directory_to_be_made);
+        std::filesystem::create_directories(test_directory_to_be_made);
     }
 
     void make_tempenv_file(const std::filesystem::path& test_directory_path) {

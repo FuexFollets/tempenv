@@ -14,11 +14,13 @@ namespace tempenv {
     class decision_maker {
         private:
 
+        bool _default_test_location_chosen {};
         std::filesystem::path _tests_location {};
         std::string _test_name {};
 
         public:
 
+        [[nodiscard]] bool default_test_location_chosen() const;
         [[nodiscard]] std::filesystem::path tests_location() const;
         [[nodiscard]] std::string test_name() const;
 

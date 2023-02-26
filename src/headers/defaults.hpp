@@ -5,7 +5,7 @@
 
 namespace tempenv {
     std::filesystem::path default_path_for_tests();
-    std::optional<std::filesystem::path> default_configuration_path();
+    std::filesystem::path default_configuration_path();
 }
 
 #endif
