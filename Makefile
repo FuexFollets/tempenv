@@ -7,7 +7,6 @@ CXX_FLAGS := -Wall \
 			-pipe \
 			-O2 \
 			-std=c++23 \
-			-g \
 			-I $(LIB_ARGPARSE) \
 			-I $(LIB_TOML)
 
@@ -31,14 +30,14 @@ runtest: test_$(NAME) dist_dir
 	./dist/$<
 
 test_%: ./dist/tests/test_%.o $(OBJECT_FILES) dist_dir # Makes test binaries
-	$(CXX) $(CXX_FLAGS) $(OBJECT_FILES) $< -o ./dist/$@
+	$(CXX) $(CXX_FLAGS) $(OBJECT_FILES) -g $< -o ./dist/$@
 
 	@echo
 	./dist/$@
 
 
 ./dist/tests/test_%.o: ./tests/test_%.cpp dist_dir
-	$(CXX) $(CXX_FLAGS) -c $< -o $@
+	$(CXX) $(CXX_FLAGS) -g -c $< -o $@
 
 ./dist/objects/%.o: ./src/%.cpp $(HEADER_FILES) dist_dir # Makes object files
 	$(CXX) $(CXX_FLAGS) -c $< -o $@
