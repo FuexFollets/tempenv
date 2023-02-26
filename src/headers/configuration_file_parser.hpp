@@ -1,10 +1,16 @@
-#ifndef CONFIGURATION_FILE_PARSER_HPP
+#ifndef TEMPENV_CONFIGURATION_FILE_PARSER_HPP
 
 #include <filesystem>
+
 #include <toml++/toml.h>
 
 namespace tempenv {
     class configuration_file {
+        private:
+
+        std::filesystem::path _tests_location {};
+        bool _is_valid_tests_location_provided {false};
+
         public:
 
         [[nodiscard]] std::filesystem::path tests_location() const;
@@ -12,11 +18,6 @@ namespace tempenv {
 
         configuration_file() = default;
         explicit configuration_file(const toml::table& parsed_config_file);
-
-        private:
-
-        std::filesystem::path _tests_location {};
-        bool _is_valid_tests_location_provided {false};
     };
 }
 
