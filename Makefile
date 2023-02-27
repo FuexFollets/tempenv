@@ -5,7 +5,6 @@ CXX := g++
 CXX_FLAGS := -Wall \
 			-pedantic \
 			-pipe \
-			-j4 \
 			-O2 \
 			-std=c++23 \
 			-I $(LIB_ARGPARSE) \
