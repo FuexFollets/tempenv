@@ -7,7 +7,7 @@ First recursively clone the tempenv repository. The tempenv binary can be built 
 ```bash
 git clone https://github.com/FuexFollets/tempenv.git --recursive-submodule
 cd tempenv
-make tempenv
+make tempenv -j 4
 mv ./dist/tempenv (another location in PATH)
 ```
 
