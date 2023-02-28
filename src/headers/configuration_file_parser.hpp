@@ -1,4 +1,6 @@
 #ifndef TEMPENV_CONFIGURATION_FILE_PARSER_HPP
+#define TEMPENV_CONFIGURATION_FILE_PARSER_HPP
+#pragma once
 
 #include <filesystem>
 

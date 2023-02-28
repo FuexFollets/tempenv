@@ -1,4 +1,6 @@
 #ifndef TEMPENV_ACTIONS_HPP
+#define TEMPENV_ACTIONS_HPP
+#pragma once
 
 #include <filesystem>
 

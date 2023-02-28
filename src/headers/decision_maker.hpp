@@ -1,4 +1,6 @@
 #ifndef TEMPENV_DECISION_MAKER_HPP
+#define TEMPENV_DECISION_MAKER_HPP
+#pragma once
 
 #include <filesystem>
 #include <string>

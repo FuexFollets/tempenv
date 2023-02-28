@@ -1,4 +1,6 @@
 #ifndef TEMPENV_ARGPARSE_PROGRAM_HPP
+#define TEMPENV_ARGPARSE_PROGRAM_HPP
+#pragma once
 
 #include <optional>
 #include <string>
@@ -6,6 +8,8 @@
 #include <exception>
 
 #include <argparse/argparse.hpp>
+
+#include "context_parser.hpp"
 
 namespace tempenv {
     class tempenv_argument_parser {
