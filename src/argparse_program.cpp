@@ -8,7 +8,6 @@
 #include <argparse/argparse.hpp>
 
 #include "headers/argparse_program.hpp"
-#include "headers/context_parser.hpp"
 
 namespace tempenv {
     void tempenv_argument_parser::initialize_program() {
