@@ -1,7 +1,5 @@
 tests_location = "invalid/home/fuexfollets/tests/"
 
-# Future features
-
 [forall_presets]
 execute_in_test_directory = [["touch", "note.txt"]]
 
