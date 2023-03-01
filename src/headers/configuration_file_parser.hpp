@@ -14,9 +14,14 @@ namespace tempenv {
 
         std::string _name {};
         std::vector<std::filesystem::path> _copy_with {};
-        std::vector<std::string> _execute_in_test_directory {};
+        std::vector<std::vector<std::string>> _execute_in_test_directory {};
 
         public:
+
+        preset() = default;
+        preset(const std::string& name,
+                const std::vector<std::filesystem::path>& copy_with,
+                const std::vector<std::vector<std::string>>& execute_in_test_directory);
 
         [[nodiscard]] std::string name() const;
         [[nodiscard]] std::vector<std::filesystem::path> copy_with() const;
