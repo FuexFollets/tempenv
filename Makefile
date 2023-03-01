@@ -10,6 +10,7 @@ CXX_FLAGS := -Wall \
 			-I $(LIB_ARGPARSE) \
 			-I $(LIB_TOML)
 
+PROGRAM_NAME := tempenv
 CPP_FILES := $(filter-out ./src/main.cpp, $(shell find ./src -name "*.cpp"))
 MAIN_FILE := $(shell find ./src -name "main.cpp")
 HEADER_FILES := $(shell find ./src -name "*.hpp") $(shell find ./src -name "*.h")
@@ -17,16 +18,16 @@ SOURCE_FILES := $(HEADER_FILES) $(CPP_FILES)
 OBJECT_FILES := $(patsubst ./src/%.cpp, ./dist/objects/%.o, $(CPP_FILES))
 
 # For running tests
-NAME ?=
+TESTNAME ?=
 
 clean:
 	rm -r ./dist/*
 
-tempenv: $(OBJECT_FILES) dist_dir
+$(PROGRAM_NAME): $(OBJECT_FILES) dist_dir
 	$(CXX) $(CXX_FLAGS) $(MAIN_FILE) -c -o ./dist/objects/main.o
-	$(CXX) $(CXX_FLAGS) $(OBJECT_FILES) ./dist/objects/main.o -o ./dist/tempenv
+	$(CXX) $(CXX_FLAGS) $(OBJECT_FILES) ./dist/objects/main.o -o ./dist/$(PROGRAM_NAME)
 
-runtest: test_$(NAME) dist_dir
+runtest: test_$(TESTNAME) dist_dir
 	./dist/$<
 
 test_%: ./dist/tests/test_%.o $(OBJECT_FILES) dist_dir # Makes test binaries
@@ -47,8 +48,9 @@ dist_dir:
 	@mkdir -p ./dist/tests
 
 print: # Tests for wildcards
+	@echo "PROGRAM_NAME: $(PROGRAM_NAME)"
 	@echo "CPP_FILES: $(CPP_FILES)"
 	@echo "MAIN_FILE: $(MAIN_FILE)"
 	@echo "OBJECT_FILES: $(OBJECT_FILES)"
 	@echo "SOURCE_FILES: $(SOURCE_FILES)"
-	@echo "NAME: $(NAME)"
+	@echo "TESTNAME: $(TESTNAME)"
