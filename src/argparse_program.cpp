@@ -12,7 +12,8 @@
 namespace tempenv {
     void tempenv_argument_parser::initialize_program() {
         program.add_argument("name", "-n", "--name")
-            .help("The name of the test. Will be the name of the directory where the test will be made");
+            .help("The name of the test. Will be the name of the directory where the test will be made")
+            .required();
 
         program.add_argument("in", "-i", "--in")
             .help("A path to where the test directory will be made");
@@ -29,25 +30,18 @@ namespace tempenv {
             program.parse_args(argc, argv);
         }
 
-        catch (const std::exception& error) {}
+        catch (const std::exception& error) {
+            if (!program.is_used("name")) {
+                std::cerr
+                    << "Error, no argument provided for '--name', '-n'.\n"
+                    "Try '--help' for a list of arguments\n"
+                    "Exiting.\n";
+            }
 
-        /*
-        if (program.is_used("-r")) {
-            std::cout << most_recent_test_path().value_or(std::filesystem::path {});
-            exit(EXIT_SUCCESS);
-        }
+            else {
+                std::cerr << "An error has occurred.\nExiting.";
+            }
 
-        if (program.is_used("-b")) {
-            std::cout << path_before_test().value_or(std::filesystem::path {});
-            exit(EXIT_SUCCESS);
-        }
-        */
-
-        if (!program.is_used("name")) {
-            std::cerr
-                << "Error, no argument provided for '--name', '-n'.\n"
-                   "Try '--help' for a list of arguments\n"
-                   "Exiting.\n";
             exit(128);
         }
 
