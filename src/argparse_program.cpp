@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <exception>
 #include <iostream>
 #include <stdexcept>
@@ -7,17 +8,17 @@
 #include <argparse/argparse.hpp>
 
 #include "headers/argparse_program.hpp"
+#include "headers/context_parser.hpp"
 
 namespace tempenv {
     void tempenv_argument_parser::initialize_program() {
-        program.add_argument("-n", "--name")
-            .required()
+        program.add_argument("name", "-n", "--name")
             .help("The name of the test. Will be the name of the directory where the test will be made");
 
-        program.add_argument("-i", "--in")
+        program.add_argument("in", "-i", "--in")
             .help("A path to where the test directory will be made");
 
-        program.add_argument("-c", "--config")
+        program.add_argument("config", "-c", "--config")
             .help("The path to a different configuration file");
     }
 
@@ -29,7 +30,21 @@ namespace tempenv {
             program.parse_args(argc, argv);
         }
 
-        catch (const std::exception& error) {
+        catch (const std::exception& error) {}
+
+        /*
+        if (program.is_used("-r")) {
+            std::cout << most_recent_test_path().value_or(std::filesystem::path {});
+            exit(EXIT_SUCCESS);
+        }
+
+        if (program.is_used("-b")) {
+            std::cout << path_before_test().value_or(std::filesystem::path {});
+            exit(EXIT_SUCCESS);
+        }
+        */
+
+        if (!program.is_used("name")) {
             std::cerr
                 << "Error, no argument provided for '--name', '-n'.\n"
                    "Try '--help' for a list of arguments\n"
@@ -37,14 +52,14 @@ namespace tempenv {
             exit(128);
         }
 
-        _test_name = program.get<std::string>("-n");
+        _test_name = program.get<std::string>("name");
 
-        if (program.is_used("-i")) {
-            _test_directory = std::filesystem::path {program.get<std::string>("-i")};
+        if (program.is_used("in")) {
+            _test_directory = std::filesystem::path {program.get<std::string>("in")};
         }
 
-        if (program.is_used("-c")) {
-            _configuration_file_location = std::filesystem::path {program.get<std::string>("-c")};
+        if (program.is_used("config")) {
+            _configuration_file_location = std::filesystem::path {program.get<std::string>("config")};
         }
     }
 
