@@ -1,5 +1,4 @@
 #include <cstdlib>
-#include <cstring>
 #include <filesystem>
 #include <optional>
 #include <string>
@@ -32,22 +31,25 @@ namespace tempenv {
         return std::filesystem::exists(std::filesystem::current_path() / ".tempenv");
     }
 
-    void set_environment_variable(const char* key, const char* value) {
-        using namespace std::string_literals;
-
-        putenv((
-            std::string {key} +
-            "="s +
-            std::string {value}).data()
-        );
+    void set_most_recent_test_path() {
+        setenv(env_variable_names::most_recent_test_path,
+                std::filesystem::current_path().string().data(), 1);
     }
 
-    void set_environment_variables() {
-        using namespace std::string_literals;
+    void set_path_before_test_env() {
+        setenv(env_variable_names::path_before_test_env,
+                std::filesystem::current_path().string().data(), 1);
+    }
 
-        set_environment_variable(
-            is_in_testing_directory() ? env_variable_names::most_recent_test_path : env_variable_names::path_before_test_env,
-            std::filesystem::current_path().string().data());
+
+    void set_environment_variables() {
+        if (is_in_testing_directory()) {
+            set_most_recent_test_path();
+        }
+
+        else {
+            set_path_before_test_env();
+        }
     }
 }
 

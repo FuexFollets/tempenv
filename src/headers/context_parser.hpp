@@ -17,7 +17,8 @@ namespace tempenv {
     std::optional<std::filesystem::path> get_path_before_test();
     bool is_in_testing_directory();
 
-    void set_environment_variable(const char* key, const char* value);
+    void set_most_recent_test_path();
+    void set_path_before_test_env();
 }
 
 #endif
