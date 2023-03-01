@@ -1,72 +1,53 @@
-#include <filesystem>
-#include <cstring>
 #include <cstdlib>
-#include <iostream>
+#include <cstring>
+#include <filesystem>
+#include <optional>
 #include <string>
-#include <ios>
-#include <fstream>
 
 #include <unistd.h>
 #include <sys/types.h>
 #include <pwd.h>
 
-#include <stdlib.h>
-
 #include "./headers/context_parser.hpp"
 
 namespace tempenv {
-    namespace env_variable_names {
-        const char* const most_recent_test_path {"__TEMPENV_MOST_RECENT_TEST_PATH"};
-        const char* const path_before_test_env {"__TEMPENV_BEFORE_TEST"};
-    };
 
-    environment_context::environment_context() {
-        const std::filesystem::path current_path {std::filesystem::current_path()};
-
+    std::optional<std::filesystem::path> get_most_recent_test_path() {
         const char* most_recent_test_path_env {std::getenv(env_variable_names::most_recent_test_path)};
+
+        if (most_recent_test_path_env == nullptr) { return {}; }
+
+        return std::filesystem::path {most_recent_test_path_env};
+    }
+
+    std::optional<std::filesystem::path> get_path_before_test() {
         const char* path_before_test_env {std::getenv(env_variable_names::path_before_test_env)};
 
-        if (most_recent_test_path_env != nullptr) {
-            _most_recent_test_path = std::filesystem::path {most_recent_test_path_env};
-        }
+        if (path_before_test_env == nullptr) { return {}; }
 
-        if (path_before_test_env != nullptr) {
-            _path_before_test = std::filesystem::path {path_before_test_env};
-        }
-
-        _is_in_testing_directory = std::filesystem::exists(current_path / ".tempenv");
-
-        if (!_is_in_testing_directory) {
-            std::string environment_variable_setting_string {
-                std::string {env_variable_names::path_before_test_env} +
-                std::string {"="} +
-                current_path.string()
-            };
-
-            putenv(environment_variable_setting_string.data());
-        }
-
-        else {
-            std::string environment_variable_setting_string {
-                std::string {env_variable_names::most_recent_test_path} +
-                std::string {"="} +
-                current_path.string()
-            };
-
-            putenv(environment_variable_setting_string.data());
-        }
+        return std::filesystem::path {path_before_test_env};
     }
 
-    std::filesystem::path environment_context::most_recent_test_path() const {
-        return _most_recent_test_path;
+    bool is_in_testing_directory() {
+        return std::filesystem::exists(std::filesystem::current_path() / ".tempenv");
     }
 
-    std::filesystem::path environment_context::path_before_test() const {
-        return _path_before_test;
+    void set_environment_variable(const char* key, const char* value) {
+        using namespace std::string_literals;
+
+        putenv((
+            std::string {key} +
+            "="s +
+            std::string {value}).data()
+        );
     }
 
-    bool environment_context::is_in_testing_directory() const {
-        return _is_in_testing_directory;
+    void set_environment_variables() {
+        using namespace std::string_literals;
+
+        set_environment_variable(
+            is_in_testing_directory() ? env_variable_names::most_recent_test_path : env_variable_names::path_before_test_env,
+            std::filesystem::current_path().string().data());
     }
 }
 
