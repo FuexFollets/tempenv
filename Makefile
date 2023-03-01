@@ -21,31 +21,31 @@ OBJECT_FILES := $(patsubst ./src/%.cpp, ./dist/objects/%.o, $(CPP_FILES))
 TESTNAME ?=
 
 clean:
-	rm -r ./dist/*
+	rm -fr ./dist/*
 
-$(PROGRAM_NAME): $(OBJECT_FILES) dist_dir
-	$(CXX) $(CXX_FLAGS) $(MAIN_FILE) -c -o ./dist/objects/main.o
+$(PROGRAM_NAME): $(OBJECT_FILES) ./dist/objects/main.o | dist_dir
+	# $(CXX) $(CXX_FLAGS) $(MAIN_FILE) -c -o ./dist/objects/main.o
 	$(CXX) $(CXX_FLAGS) $(OBJECT_FILES) ./dist/objects/main.o -o ./dist/$(PROGRAM_NAME)
 
-runtest: test_$(TESTNAME) dist_dir
+runtest: test_$(TESTNAME) | dist_dir
 	./dist/$<
 
-test_%: ./dist/tests/test_%.o $(OBJECT_FILES) dist_dir # Makes test binaries
+test_%: ./dist/tests/test_%.o $(OBJECT_FILES) | dist_dir # Makes test binaries
 	$(CXX) $(CXX_FLAGS) $(OBJECT_FILES) -g $< -o ./dist/$@
 
 	@echo
 	./dist/$@
 
 
-./dist/tests/test_%.o: ./tests/test_%.cpp dist_dir
+./dist/tests/test_%.o: ./tests/test_%.cpp | dist_dir
 	$(CXX) $(CXX_FLAGS) -g -c $< -o $@
 
-./dist/objects/%.o: ./src/%.cpp $(HEADER_FILES) dist_dir # Makes object files
+./dist/objects/%.o: ./src/%.cpp $(HEADER_FILES) | dist_dir # Makes object files
 	$(CXX) $(CXX_FLAGS) -c $< -o $@
 
 dist_dir:
-	@mkdir -p ./dist/objects
-	@mkdir -p ./dist/tests
+	@-mkdir -p ./dist/objects
+	@-mkdir -p ./dist/tests
 
 print: # Tests for wildcards
 	@echo "PROGRAM_NAME: $(PROGRAM_NAME)"
