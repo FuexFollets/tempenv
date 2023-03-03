@@ -3,6 +3,7 @@
 #include <toml++/toml.h>
 
 #include "./headers/configuration_file_parser.hpp"
+#include "toml++/impl/node.h"
 #include "toml++/impl/table.h"
 
 namespace tempenv {
@@ -15,12 +16,23 @@ namespace tempenv {
     preset::preset(std::string&& name, const toml::table& toml_section) :
         _name {name} {
 
-        toml_section["copy_with"].as_array() -> for_each(
-            [&, this] (auto&& element) {
-                if (element.value<std::string>()) {
+        for (const toml::node& maybe_file_path: *toml_section["copy_with"].as_array()) {
+            if (const std::optional<std::string> path = maybe_file_path.value<std::string>()) {
+                _copy_with.emplace_back(path.value());
+            }
+        }
+
+        for (const toml::node& maybe_command: *toml_section["execute_in_test_directory"].as_array()) {
+            if (!maybe_command.is_array()) { continue; }
+
+            std::vector<std::string> command_words {};
+
+            for (const toml::node& maybe_command_word: *maybe_command.as_array()) {
+                if (const std::optional<std::string> command_word = maybe_command_word.value<std::string>()) {
+                    command_words.emplace_back(command_word.value());
                 }
             }
-        );
+        }
     }
 
     std::string preset::name() const {
