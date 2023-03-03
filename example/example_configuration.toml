@@ -1,6 +1,7 @@
 tests_location = "invalid/home/fuexfollets/tests/"
 
 [forall_presets]
+copy_with = ["/home/someuser/words.txt"]
 execute_in_test_directory = [["touch", "note.txt"]]
 
 [presets.example_preset]
