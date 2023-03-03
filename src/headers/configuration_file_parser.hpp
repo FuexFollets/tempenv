@@ -1,9 +1,9 @@
 #ifndef TEMPENV_CONFIGURATION_FILE_PARSER_HPP
 #define TEMPENV_CONFIGURATION_FILE_PARSER_HPP
-#include <string>
 #pragma once
 
 #include <filesystem>
+#include <string>
 #include <vector>
 
 #include <toml++/toml.h>
@@ -19,13 +19,14 @@ namespace tempenv {
         public:
 
         preset() = default;
-        preset(const std::string& name,
-                const std::vector<std::filesystem::path>& copy_with,
-                const std::vector<std::vector<std::string>>& execute_in_test_directory);
+        preset(std::string&& name,
+                std::vector<std::filesystem::path>&& copy_with,
+                std::vector<std::vector<std::string>>&& execute_in_test_directory);
+        explicit preset(std::string&& name, const toml::table& toml_section);
 
         [[nodiscard]] std::string name() const;
         [[nodiscard]] std::vector<std::filesystem::path> copy_with() const;
-        [[nodiscard]] std::vector<std::string> execute_in_test_directory() const;
+        [[nodiscard]] std::vector<std::vector<std::string>> execute_in_test_directory() const;
     };
 
     class configuration_file {
