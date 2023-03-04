@@ -32,4 +32,4 @@ Optional arguments:
 ```
 
 # Configuration
-Configuration can be done in a `.toml` file. There is an example located in `./example/example_configuration.toml`. By deafult, this file is read from `~/.config/tempenv/config.toml`, but another path can be specified with the `--config` argument
+Configuration can be done in a TOML file. There is an example located in `./example/example_configuration.toml`. By deafult, this file is read from `~/.config/tempenv/config.toml`, but another path can be specified with the `--config` argument
