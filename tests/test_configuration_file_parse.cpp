@@ -46,7 +46,7 @@ int main(int argc, const char** argv) {
         << "If so, test location: " << parsed_config_file.tests_location() << '\n';
 
     std::cout << "Forall presets\n";
-    print_preset(parsed_config_file.forall_presets());
+    print_preset(parsed_config_file.forall_presets().value_or(tempenv::preset {}));
 
     std::cout << "\nAll presets\n";
     for (const tempenv::preset& parsed_preset: parsed_config_file.all_presets()) {
