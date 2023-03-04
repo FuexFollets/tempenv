@@ -11,14 +11,14 @@
 
 namespace tempenv {
     void tempenv_argument_parser::initialize_program() {
-        program.add_argument("name", "-n", "--name")
+        program.add_argument("-n", "--name")
             .help("The name of the test. Will be the name of the directory where the test will be made")
             .required();
 
-        program.add_argument("in", "-i", "--in")
+        program.add_argument("-i", "--in")
             .help("A path to where the test directory will be made");
 
-        program.add_argument("config", "-c", "--config")
+        program.add_argument("-c", "--config")
             .help("The path to a different configuration file");
     }
 
@@ -45,14 +45,14 @@ namespace tempenv {
             exit(128);
         }
 
-        _test_name = program.get<std::string>("name");
+        _test_name = program.get<std::string>("--name");
 
-        if (program.is_used("in")) {
-            _test_directory = std::filesystem::path {program.get<std::string>("in")};
+        if (program.is_used("--in")) {
+            _test_directory = std::filesystem::path {program.get<std::string>("--in")};
         }
 
-        if (program.is_used("config")) {
-            _configuration_file_location = std::filesystem::path {program.get<std::string>("config")};
+        if (program.is_used("--config")) {
+            _configuration_file_location = std::filesystem::path {program.get<std::string>("--config")};
         }
     }
 
