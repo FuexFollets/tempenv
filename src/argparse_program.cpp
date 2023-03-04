@@ -20,6 +20,9 @@ namespace tempenv {
 
         program.add_argument("-c", "--config")
             .help("The path to a different configuration file");
+
+        program.add_argument("-p", "--presets")
+            .help("Provide a list of presets to be chosen from the configuration file");
     }
 
     tempenv_argument_parser::tempenv_argument_parser(int argc, const char** argv) :
@@ -53,6 +56,10 @@ namespace tempenv {
 
         if (program.is_used("--config")) {
             _configuration_file_location = std::filesystem::path {program.get<std::string>("--config")};
+        }
+
+        if (program.is_used("--presets")) {
+            _selected_preset_names = program.get<std::vector<std::string>>("--presets");
         }
     }
 
