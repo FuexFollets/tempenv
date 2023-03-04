@@ -1,5 +1,6 @@
 #include <string>
 #include <filesystem>
+
 #include <toml++/toml.h>
 
 #include "./headers/configuration_file_parser.hpp"
@@ -64,10 +65,8 @@ namespace tempenv {
             _is_valid_tests_location_provided = false;
         }
 
-        for (auto&&[name, value]: parsed_config_file) {
-            if (!name.str().starts_with("presets.")) { continue; }
-
-            _all_presets.push_back(preset {std::string {name.str().substr(7)}, *value.as_table()});
+        for (auto&&[name, value]: *parsed_config_file["presets"].as_table()) {
+            _all_presets.push_back(preset {std::string {name.str()}, *value.as_table()});
         }
     }
 
