@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <optional>
 
 #include <toml++/toml.h>
 
@@ -35,7 +36,7 @@ namespace tempenv {
 
         std::filesystem::path _tests_location {};
         bool _is_valid_tests_location_provided {false};
-        preset _forall_presets {};
+        std::optional<preset> _forall_presets {};
         std::vector<preset> _all_presets {};
 
         public:

@@ -49,7 +49,7 @@ namespace tempenv {
     }
 
     configuration_file::configuration_file(const toml::table& parsed_config_file) :
-        _forall_presets {std::string {}, *parsed_config_file["forall_presets"].as_table()} {
+        _forall_presets {preset {std::string {}, *parsed_config_file["forall_presets"].as_table()}} {
         const std::optional<std::string> maybe_test_path_name {
             parsed_config_file["tests_location"].value<std::string>()
         };
