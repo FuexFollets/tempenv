@@ -74,4 +74,8 @@ namespace tempenv {
     std::optional<std::filesystem::path> tempenv_argument_parser::configuration_file_location() const {
         return _configuration_file_location;
     }
+
+    std::optional<std::vector<std::string>> tempenv_argument_parser::selected_preset_names() const {
+        return _selected_preset_names;
+    }
 }
