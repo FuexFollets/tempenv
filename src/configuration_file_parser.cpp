@@ -47,7 +47,8 @@ namespace tempenv {
         return _execute_in_test_directory;
     }
 
-    configuration_file::configuration_file(const toml::table& parsed_config_file) {
+    configuration_file::configuration_file(const toml::table& parsed_config_file) :
+        _forall_presets {std::string {}, *parsed_config_file["forall_presets"].as_table()} {
         const std::optional<std::string> maybe_test_path_name {
             parsed_config_file["tests_location"].value<std::string>()
         };
@@ -62,6 +63,12 @@ namespace tempenv {
         else {
             _is_valid_tests_location_provided = false;
         }
+
+        for (auto&&[name, value]: parsed_config_file) {
+            if (!name.str().starts_with("preset.")) { continue; }
+
+            _all_presets.push_back(preset {std::string {name.str().substr(7)}, *value.as_table()});
+        }
     }
 
     bool configuration_file::is_valid_tests_location_provided() const {
@@ -70,5 +77,9 @@ namespace tempenv {
 
     std::filesystem::path configuration_file::tests_location() const {
         return _tests_location;
+    }
+
+    std::vector<preset> configuration_file::all_presets() const {
+        return _all_presets;
     }
 }
