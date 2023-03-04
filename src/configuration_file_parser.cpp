@@ -65,7 +65,7 @@ namespace tempenv {
         }
 
         for (auto&&[name, value]: parsed_config_file) {
-            if (!name.str().starts_with("preset.")) { continue; }
+            if (!name.str().starts_with("presets.")) { continue; }
 
             _all_presets.push_back(preset {std::string {name.str().substr(7)}, *value.as_table()});
         }
@@ -81,5 +81,9 @@ namespace tempenv {
 
     std::vector<preset> configuration_file::all_presets() const {
         return _all_presets;
+    }
+
+    preset configuration_file::forall_presets() const {
+        return _forall_presets;
     }
 }
