@@ -82,7 +82,7 @@ namespace tempenv {
         return _all_presets;
     }
 
-    preset configuration_file::forall_presets() const {
+    std::optional<preset> configuration_file::forall_presets() const {
         return _forall_presets;
     }
 }
