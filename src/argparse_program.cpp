@@ -22,6 +22,7 @@ namespace tempenv {
             .help("The path to a different configuration file");
 
         program.add_argument("-p", "--presets")
+            .nargs(argparse::nargs_pattern::any)
             .help("Provide a list of presets to be chosen from the configuration file");
     }
 

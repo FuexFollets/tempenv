@@ -65,24 +65,30 @@ namespace tempenv {
             for (const preset& available_preset: parsed_config_file.all_presets()) {
                 if (std::any_of(selected_presets.begin(), selected_presets.end(),
                     [&] (const std::string& preset_name) { return preset_name == available_preset.name(); })) {
+                    const auto& execute_in_test_directory {available_preset.execute_in_test_directory()};
+                    const auto& copy_with {available_preset.copy_with()};
+
                     _execute_in_test_directory.insert(_execute_in_test_directory.begin(),
-                        available_preset.execute_in_test_directory().begin(),
-                        available_preset.execute_in_test_directory().end());
+                        execute_in_test_directory.begin(),
+                        execute_in_test_directory.end());
 
                     _copy_with.insert(_copy_with.begin(),
-                        available_preset.copy_with().begin(),
-                        available_preset.copy_with().end());
+                        copy_with.begin(),
+                        copy_with.end());
                 }
             }
 
             if (const std::optional<preset>& forall_presets = parsed_config_file.forall_presets()) {
-                    _execute_in_test_directory.insert(_execute_in_test_directory.begin(),
-                        forall_presets -> execute_in_test_directory().begin(),
-                        forall_presets -> execute_in_test_directory().end());
+                const auto& execute_in_test_directory {forall_presets -> execute_in_test_directory()};
+                const auto& copy_with {forall_presets -> copy_with()};
 
-                    _copy_with.insert(_copy_with.begin(),
-                        forall_presets -> copy_with().begin(),
-                        forall_presets -> copy_with().end());
+                _execute_in_test_directory.insert(_execute_in_test_directory.begin(),
+                    execute_in_test_directory.begin(),
+                    execute_in_test_directory.end());
+
+                _copy_with.insert(_copy_with.begin(),
+                    copy_with.begin(),
+                    copy_with.end());
             }
         }
     }

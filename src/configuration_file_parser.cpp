@@ -17,9 +17,11 @@ namespace tempenv {
     preset::preset(std::string&& name, const toml::table& toml_section) :
         _name {name} {
 
-        for (const toml::node& maybe_file_path: *toml_section["copy_with"].as_array()) {
-            if (const std::optional<std::string> path = maybe_file_path.value<std::string>()) {
-                _copy_with.emplace_back(path.value());
+        if (toml_section["copy_with"].is_array()) {
+            for (const toml::node& maybe_file_path: *toml_section["copy_with"].as_array()) {
+                if (const std::optional<std::string> path = maybe_file_path.value<std::string>()) {
+                    _copy_with.emplace_back(path.value());
+                }
             }
         }
 
