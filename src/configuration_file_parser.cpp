@@ -35,6 +35,8 @@ namespace tempenv {
                     command_words.emplace_back(command_word.value());
                 }
             }
+
+            _execute_in_test_directory.emplace_back(std::move(command_words));
         }
     }
 
