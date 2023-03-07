@@ -30,7 +30,7 @@ int main(int argc, const char** argv) {
         << "Name of the test: " << chosen_options.test_name() << '\n'
         << "Location of tests: " << chosen_options.tests_location() << '\n';
 
-    std::cout << "\nExecute in test directory: " << chosen_options.execute_in_test_directory().empty() << '\n';
+    std::cout << "\nExecute in test directory commands empty? " << chosen_options.execute_in_test_directory().empty() << '\n';
     print_vector(chosen_options.execute_in_test_directory());
 
     std::cout << "\nCopy with paths:\n";
