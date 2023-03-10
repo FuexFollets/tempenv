@@ -2,6 +2,8 @@
 #include <filesystem>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <numeric>
 
 #include "headers/actions.hpp"
 
@@ -47,5 +49,20 @@ namespace tempenv {
 
     void make_tempenv_file(const std::filesystem::path& test_directory_path) {
         std::ofstream {test_directory_path / ".tempenv"}.close();
+    }
+
+    void execute_in_directory(const std::filesystem::path& test_directory_path,
+            const std::vector<std::string>& command) {
+        std::filesystem::current_path(test_directory_path);
+
+        static const std::function<std::string(std::string&&, const std::string&)> fold_space {
+            [] (std::string&& first, const std::string& second) -> std::string {
+                return std::move(first) + " " + second;
+            }
+        };
+
+        std::system(
+            std::accumulate(command.begin(), command.end(), std::string {}, fold_space).c_str()
+        );
     }
 }
