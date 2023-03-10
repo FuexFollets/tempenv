@@ -40,6 +40,10 @@ namespace tempenv {
         make_test_directory(directory_to_be_made);
         make_tempenv_file(directory_to_be_made);
 
+        for (const std::vector<std::string>& command: decisions.execute_in_test_directory()) {
+            execute_in_directory(directory_to_be_made, command);
+        }
+
         std::cout << directory_to_be_made.string() << '\n';
     }
 
