@@ -9,7 +9,7 @@ CXX_FLAGS := -Wall \
 			-std=c++23 \
 			-I $(LIB_ARGPARSE) \
 			-I $(LIB_TOML)
-LDFLAGS :=
+LDFLAGS ?=
 
 PROGRAM_NAME := tempenv
 CPP_FILES := $(filter-out ./src/main.cpp, $(shell find ./src -name "*.cpp"))
