@@ -1,6 +1,14 @@
 # tempenv
 A script for making temporary environments for testing
 
+# Installation
+This package is available in the arch user repository. It can be installed with
+```bash
+yay -S tempenv
+```
+
+This package can additionally be built and installed manually
+
 # Building
 First recursively clone the tempenv repository. The tempenv binary can be built by running `make tempenv` in the project root. The binary will then be located at `./dist/tempenv`
 
