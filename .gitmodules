@@ -4,3 +4,6 @@
 [submodule "lib/tomlplusplus"]
 	path = lib/tomlplusplus
 	url = https://github.com/marzer/tomlplusplus.git
+[submodule "Constants"]
+	path = Constants
+	url = https://github.com/FuexFollets/Constants.git

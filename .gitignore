@@ -33,6 +33,7 @@
 
 # Dist directory
 dist
+bin
 
 # Clangd .cache file
 .cache
