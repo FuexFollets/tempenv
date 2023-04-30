@@ -8,6 +8,6 @@
 namespace tempenv {
     std::filesystem::path default_path_for_tests();
     std::filesystem::path default_configuration_path();
-}
+} // namespace tempenv
 
 #endif

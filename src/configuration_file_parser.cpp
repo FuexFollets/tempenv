@@ -1,5 +1,5 @@
-#include <string>
 #include <filesystem>
+#include <string>
 
 #include <toml++/toml.h>
 
@@ -8,30 +8,32 @@
 #include "toml++/impl/table.h"
 
 namespace tempenv {
-    preset::preset(std::string&& name,
-            std::vector<std::filesystem::path>&& copy_with,
-            std::vector<std::vector<std::string>>&& execute_in_test_directory) :
-        _name {name}, _copy_with {copy_with}, _execute_in_test_directory {execute_in_test_directory}
-    {}
+    preset::preset(std::string&& name, std::vector<std::filesystem::path>&& copy_with,
+                   std::vector<std::vector<std::string>>&& execute_in_test_directory) :
+        _name {name},
+        _copy_with {copy_with}, _execute_in_test_directory {execute_in_test_directory} {
+    }
 
-    preset::preset(std::string&& name, const toml::table& toml_section) :
-        _name {name} {
-
-        if (toml_section["copy_with"].is_array()) {
-            for (const toml::node& maybe_file_path: *toml_section["copy_with"].as_array()) {
+    preset::preset(std::string&& name, const toml::table& toml_section) : _name {name} {
+        if (toml_section ["copy_with"].is_array()) {
+            for (const toml::node& maybe_file_path: *toml_section ["copy_with"].as_array()) {
                 if (const std::optional<std::string> path = maybe_file_path.value<std::string>()) {
                     _copy_with.emplace_back(path.value());
                 }
             }
         }
 
-        for (const toml::node& maybe_command: *toml_section["execute_in_test_directory"].as_array()) {
-            if (!maybe_command.is_array()) { continue; }
+        for (const toml::node& maybe_command:
+             *toml_section ["execute_in_test_directory"].as_array()) {
+            if (!maybe_command.is_array()) {
+                continue;
+            }
 
             std::vector<std::string> command_words {};
 
             for (const toml::node& maybe_command_word: *maybe_command.as_array()) {
-                if (const std::optional<std::string> command_word = maybe_command_word.value<std::string>()) {
+                if (const std::optional<std::string> command_word =
+                        maybe_command_word.value<std::string>()) {
                     command_words.emplace_back(command_word.value());
                 }
             }
@@ -53,14 +55,14 @@ namespace tempenv {
     }
 
     configuration_file::configuration_file(const toml::table& parsed_config_file) :
-        _forall_presets {preset {std::string {}, *parsed_config_file["forall_presets"].as_table()}} {
+        _forall_presets {
+            preset {std::string {}, *parsed_config_file ["forall_presets"].as_table()}
+    } {
         const std::optional<std::string> maybe_test_path_name {
-            parsed_config_file["tests_location"].value<std::string>()
-        };
+            parsed_config_file ["tests_location"].value<std::string>()};
 
         if (maybe_test_path_name.has_value()) {
-            _tests_location = std::filesystem::path {
-                maybe_test_path_name.value()};
+            _tests_location = std::filesystem::path {maybe_test_path_name.value()};
 
             _is_valid_tests_location_provided = true;
         }
@@ -69,7 +71,7 @@ namespace tempenv {
             _is_valid_tests_location_provided = false;
         }
 
-        for (auto&&[name, value]: *parsed_config_file["presets"].as_table()) {
+        for (auto&& [name, value]: *parsed_config_file ["presets"].as_table()) {
             _all_presets.push_back(preset {std::string {name.str()}, *value.as_table()});
         }
     }
@@ -89,4 +91,4 @@ namespace tempenv {
     std::optional<preset> configuration_file::forall_presets() const {
         return _forall_presets;
     }
-}
+} // namespace tempenv

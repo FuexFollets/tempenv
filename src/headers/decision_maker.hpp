@@ -8,8 +8,8 @@
 #include <argparse/argparse.hpp>
 #include <toml++/toml.h>
 
-#include "configuration_file_parser.hpp"
 #include "argparse_program.hpp"
+#include "configuration_file_parser.hpp"
 #include "defaults.hpp"
 
 namespace tempenv {
@@ -32,6 +32,6 @@ namespace tempenv {
 
         explicit decision_maker(const tempenv_argument_parser& parsed_arguments);
     };
-}
+} // namespace tempenv
 
 #endif

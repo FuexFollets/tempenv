@@ -2,10 +2,10 @@
 #define TEMPENV_ARGPARSE_PROGRAM_HPP
 #pragma once
 
+#include <exception>
+#include <filesystem>
 #include <optional>
 #include <string>
-#include <filesystem>
-#include <exception>
 
 #include <argparse/argparse.hpp>
 
@@ -32,6 +32,6 @@ namespace tempenv {
         tempenv_argument_parser() = default;
         tempenv_argument_parser(int argc, const char** argv);
     };
-}
+} // namespace tempenv
 
 #endif

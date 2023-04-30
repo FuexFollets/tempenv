@@ -1,9 +1,9 @@
 #include <cstdlib>
 #include <exception>
+#include <filesystem>
 #include <iostream>
 #include <stdexcept>
 #include <string>
-#include <filesystem>
 
 #include <argparse/argparse.hpp>
 
@@ -12,14 +12,13 @@
 namespace tempenv {
     void tempenv_argument_parser::initialize_program() {
         program.add_argument("-n", "--name")
-            .help("The name of the test. Will be the name of the directory where the test will be made")
+            .help("The name of the test. Will be the name of the directory where the test will be "
+                  "made")
             .required();
 
-        program.add_argument("-i", "--in")
-            .help("A path to where the test directory will be made");
+        program.add_argument("-i", "--in").help("A path to where the test directory will be made");
 
-        program.add_argument("-c", "--config")
-            .help("The path to a different configuration file");
+        program.add_argument("-c", "--config").help("The path to a different configuration file");
 
         program.add_argument("-p", "--presets")
             .nargs(argparse::nargs_pattern::any)
@@ -28,7 +27,7 @@ namespace tempenv {
 
     tempenv_argument_parser::tempenv_argument_parser(int argc, const char** argv) :
         program {"tempenv", "1.0.0"} {
-        this -> initialize_program();
+        this->initialize_program();
 
         try {
             program.parse_args(argc, argv);
@@ -36,10 +35,9 @@ namespace tempenv {
 
         catch (const std::exception& error) {
             if (!program.is_used("name")) {
-                std::cerr
-                    << "Error, no argument provided for '--name', '-n'.\n"
-                    "Try '--help' for a list of arguments\n"
-                    "Exiting.\n";
+                std::cerr << "Error, no argument provided for '--name', '-n'.\n"
+                             "Try '--help' for a list of arguments\n"
+                             "Exiting.\n";
             }
 
             else {
@@ -56,7 +54,8 @@ namespace tempenv {
         }
 
         if (program.is_used("--config")) {
-            _configuration_file_location = std::filesystem::path {program.get<std::string>("--config")};
+            _configuration_file_location =
+                std::filesystem::path {program.get<std::string>("--config")};
         }
 
         if (program.is_used("--presets")) {
@@ -72,11 +71,12 @@ namespace tempenv {
         return _test_directory;
     }
 
-    std::optional<std::filesystem::path> tempenv_argument_parser::configuration_file_location() const {
+    std::optional<std::filesystem::path>
+        tempenv_argument_parser::configuration_file_location() const {
         return _configuration_file_location;
     }
 
     std::optional<std::vector<std::string>> tempenv_argument_parser::selected_preset_names() const {
         return _selected_preset_names;
     }
-}
+} // namespace tempenv

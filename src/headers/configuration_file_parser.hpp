@@ -3,9 +3,9 @@
 #pragma once
 
 #include <filesystem>
+#include <optional>
 #include <string>
 #include <vector>
-#include <optional>
 
 #include <toml++/toml.h>
 
@@ -20,9 +20,8 @@ namespace tempenv {
         public:
 
         preset() = default;
-        preset(std::string&& name,
-                std::vector<std::filesystem::path>&& copy_with,
-                std::vector<std::vector<std::string>>&& execute_in_test_directory);
+        preset(std::string&& name, std::vector<std::filesystem::path>&& copy_with,
+               std::vector<std::vector<std::string>>&& execute_in_test_directory);
         explicit preset(std::string&& name, const toml::table& toml_section);
 
         [[nodiscard]] std::string name() const;
@@ -31,7 +30,6 @@ namespace tempenv {
     };
 
     class configuration_file {
-
         private:
 
         std::filesystem::path _tests_location {};
@@ -49,6 +47,6 @@ namespace tempenv {
         configuration_file() = default;
         explicit configuration_file(const toml::table& parsed_config_file);
     };
-}
+} // namespace tempenv
 
 #endif

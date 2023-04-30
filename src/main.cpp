@@ -1,6 +1,6 @@
 #include <cstdlib>
-#include <iostream>
 #include <functional>
+#include <iostream>
 #include <string>
 
 #include "headers/actions.hpp"

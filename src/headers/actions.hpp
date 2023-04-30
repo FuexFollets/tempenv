@@ -3,8 +3,8 @@
 #pragma once
 
 #include <filesystem>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "decision_maker.hpp"
 
@@ -14,7 +14,7 @@ namespace tempenv {
     void make_test_directory(const std::filesystem::path& test_directory_to_be_made);
     void make_tempenv_file(const std::filesystem::path& test_directory_path);
     void execute_in_directory(const std::filesystem::path& test_directory_path,
-            const std::vector<std::string>& command);
-}
+                              const std::vector<std::string>& command);
+} // namespace tempenv
 
 #endif
