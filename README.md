@@ -42,8 +42,48 @@ Optional arguments:
 ## Configuration
 Configuration can be done in a TOML file. There is an example located in `./example/example_configuration.toml`. By default, this file is read from `~/.config/tempenv/config.toml`, but another path can be specified with the `--config` argument
 
-https://github.com/FuexFollets/tempenv/blob/a43b3b1fa47cbe2a4d56efb2f4f6d5c89ee056a8/example/example_configuration.toml
+<details>
+<summary>Example configuration file</summary>
+<br>
 
 ```toml
+tests_location = "invalid/home/fuexfollets/tests/"
+
+[forall_presets]
+copy_with = ["/home/someuser/words.txt"]
+execute_in_test_directory = [["touch", "note.txt"]]
+
+[presets.example_preset]
+copy_with = [
+    "~/some-file-in-home-directory",
+    "./some-file-in-current-working-directory",
+]
+execute_in_test_directory = [
+    [
+        "this",
+        "is",
+        "executed",
+        "in",
+        "the",
+        "new",
+        "test",
+        "directory",
+    ],
+    [
+        "and",
+        "so",
+        "is",
+        "this",
+    ],
+]
+
+[presets.cpp]
+copy_with = [
+    "./lib/some-library/",
+    "./main.cpp",
+    "/home/some-user/standard/Makefile",
+]
+execute_in_test_directory = [["make", "main"], ["wget", "github.com"]]
 ```
-[abc](./example/example_configuration.toml)
+
+</details>
